@@ -3,7 +3,6 @@ package com.bernardo.fcs.controller;
 import java.net.URI;
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +58,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") String id) {
         userService.deleteById(id);
-        
+
         return ResponseEntity.noContent().build();
     }
 }
