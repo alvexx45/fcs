@@ -22,7 +22,6 @@ public class Investment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String type;
-    private String source;
     private BigDecimal value;
     private LocalDate date;
     
@@ -36,11 +35,10 @@ public class Investment {
 
     public Investment() {}
 
-    public Investment(UUID id, String type, String source, BigDecimal value, LocalDate date, User user,
+    public Investment(UUID id, String type, BigDecimal value, LocalDate date, User user,
             Instant creationTimestamp, Instant updateTimestamp) {
         this.id = id;
         this.type = type;
-        this.source = source;
         this.value = value;
         this.date = date;
         this.user = user;
@@ -62,14 +60,6 @@ public class Investment {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
     }
 
     public BigDecimal getValue() {
