@@ -1,6 +1,7 @@
 package com.bernardo.fcs.model;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,14 +28,25 @@ public class User {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
+    @OneToMany
+    private List<Expense> expenses;
+    @OneToMany
+    private List<Income> incomes;
+    @OneToMany
+    private List<Investment> investments;
+
     public User() {}
 
-    public User(UUID id, String username, String password, Instant creationTimestamp, Instant updateTimestamp) {
+    public User(UUID id, String username, String password, Instant creationTimestamp, Instant updateTimestamp,
+            List<Expense> expenses, List<Income> incomes, List<Investment> investments) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.creationTimestamp = creationTimestamp;
         this.updateTimestamp = updateTimestamp;
+        this.expenses = expenses;
+        this.incomes = incomes;
+        this.investments = investments;
     }
 
     public UUID getId() {
@@ -74,5 +87,29 @@ public class User {
 
     public void setUpdateTimestamp(Instant updateTimestamp) {
         this.updateTimestamp = updateTimestamp;
-    }    
+    }
+
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
+    public List<Income> getIncomes() {
+        return incomes;
+    }
+
+    public void setIncomes(List<Income> incomes) {
+        this.incomes = incomes;
+    }
+
+    public List<Investment> getInvestments() {
+        return investments;
+    }
+
+    public void setInvestments(List<Investment> investments) {
+        this.investments = investments;
+    }
 }
