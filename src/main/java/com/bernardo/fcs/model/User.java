@@ -28,11 +28,11 @@ public class User {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Expense> expenses;
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Income> incomes;
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Investment> investments;
 
     public User() {}
