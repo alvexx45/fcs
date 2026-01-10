@@ -81,17 +81,4 @@ public class UserController {
         var incomes = userService.listIncomes(userId);
         return ResponseEntity.ok(incomes);
     }
-
-    // investment
-    @PostMapping("{userId}/investment")
-    public ResponseEntity<Void> createInvestment(@PathVariable("userId") String userId, @RequestBody CreateInvestmentDTO createInvestmentDTO) {
-        userService.createInvestment(userId, createInvestmentDTO);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{userId}/investment")
-    public ResponseEntity<List<InvestmentResponseDTO>> listInvestments(@PathVariable("userId") String userId) {
-        var investments = userService.listInvestments(userId);
-        return ResponseEntity.ok(investments);
-    }
 }
