@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardo.fcs.controller.dto.CreateExpenseDTO;
 import com.bernardo.fcs.controller.dto.CreateIncomeDTO;
 import com.bernardo.fcs.controller.dto.CreateInvestmentDTO;
 import com.bernardo.fcs.controller.dto.CreateUserDTO;
-import com.bernardo.fcs.controller.dto.ExpenseResponseDTO;
 import com.bernardo.fcs.controller.dto.IncomeResponseDTO;
 import com.bernardo.fcs.controller.dto.InvestmentResponseDTO;
 import com.bernardo.fcs.controller.dto.UpdateUserDTO;
@@ -65,7 +63,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteById(@PathVariable("userId") String userId) {
+    public ResponseEntity<Void> deleteUserById(@PathVariable("userId") String userId) {
         userService.deleteUserById(userId);
 
         return ResponseEntity.noContent().build();
@@ -82,19 +80,6 @@ public class UserController {
     public ResponseEntity<List<IncomeResponseDTO>> listIncomes(@PathVariable("userId") String userId) {
         var incomes = userService.listIncomes(userId);
         return ResponseEntity.ok(incomes);
-    }
-
-    // expense
-    @PostMapping("/{userId}/expense")
-    public ResponseEntity<Void> createExpense(@PathVariable("userId") String userId, @RequestBody CreateExpenseDTO createExpenseDTO) {
-        userService.createExpense(userId, createExpenseDTO);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{userId}/expense")
-    public ResponseEntity<List<ExpenseResponseDTO>> listExpenses(@PathVariable("userId") String userId) {
-        var expenses = userService.listExpenses(userId);
-        return ResponseEntity.ok(expenses);
     }
 
     // investment

@@ -110,29 +110,6 @@ public class UserService {
          inc.getSource(), inc.getValue(), inc.getDate())).toList();
     }
 
-    // expense
-    public void createExpense(String userId, CreateExpenseDTO createExpenseDTO) {
-        var user = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        var entity = new Expense();
-        entity.setType(createExpenseDTO.type());
-        entity.setValue(createExpenseDTO.value());
-        entity.setP_method(createExpenseDTO.p_method());
-        entity.setDate(createExpenseDTO.date());
-        entity.setUser(user);
-
-        expenseRepository.save(entity);
-    }
-
-    public List<ExpenseResponseDTO> listExpenses(String userId) {
-        var user = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        
-        return user.getExpenses().stream().map(exp -> new ExpenseResponseDTO(exp.getExpenseId().toString(), exp.getType(),
-         exp.getValue(), exp.getP_method(), exp.getDate())).toList();   
-    }
-
     // investment
     public void createInvestment(String userId, CreateInvestmentDTO createInvestmentDTO) {
         var user = userRepository.findById(UUID.fromString(userId))
