@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
 public class Investment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID investmentId;
     private String type;
     private BigDecimal value;
     private LocalDate date;
@@ -40,9 +40,9 @@ public class Investment {
 
     public Investment() {}
 
-    public Investment(UUID id, String type, BigDecimal value, LocalDate date, User user,
+    public Investment(UUID investmentId, String type, BigDecimal value, LocalDate date, User user,
             Instant creationTimestamp, Instant updateTimestamp) {
-        this.id = id;
+        this.investmentId = investmentId;
         this.type = type;
         this.value = value;
         this.date = date;
@@ -51,12 +51,12 @@ public class Investment {
         this.updateTimestamp = updateTimestamp;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getInvestmentId() {
+        return investmentId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setInvestmentId(UUID investmentId) {
+        this.investmentId = investmentId;
     }
 
     public String getType() {

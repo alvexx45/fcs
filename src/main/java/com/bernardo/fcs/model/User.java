@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID userId;
     private String username;
     private String password;
 
@@ -38,9 +38,9 @@ public class User {
 
     public User() {}
 
-    public User(UUID id, String username, String password, Instant creationTimestamp, Instant updateTimestamp,
+    public User(UUID userId, String username, String password, Instant creationTimestamp, Instant updateTimestamp,
             List<Expense> expenses, List<Income> incomes, List<Investment> investments) {
-        this.id = id;
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.creationTimestamp = creationTimestamp;
@@ -50,12 +50,12 @@ public class User {
         this.investments = investments;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

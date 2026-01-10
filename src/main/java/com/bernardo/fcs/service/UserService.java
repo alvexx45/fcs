@@ -48,19 +48,19 @@ public class UserService {
 
         var userSaved = userRepository.save(entity);
         
-        return userSaved.getId();
+        return userSaved.getUserId();
     }
 
-    public Optional<User> getUserById(String id) {
-        return userRepository.findById(UUID.fromString(id));
+    public Optional<User> getUserById(String userId) {
+        return userRepository.findById(UUID.fromString(userId));
     }
 
     public List<User> listUsers() {
         return userRepository.findAll();
     }
 
-    public void updateUserById(String id, UpdateUserDTO updateUserDTO) {
-        var uid = UUID.fromString(id);
+    public void updateUserById(String userId, UpdateUserDTO updateUserDTO) {
+        var uid = UUID.fromString(userId);
         var userEntity = userRepository.findById(uid);
 
         if (userEntity.isPresent()) {
@@ -78,8 +78,8 @@ public class UserService {
         }
     }
 
-    public void deleteById(String id) {
-        var uid = UUID.fromString(id);
+    public void deleteUserById(String userId) {
+        var uid = UUID.fromString(userId);
         var userExists = userRepository.existsById(uid);
 
         if (userExists) {
@@ -88,8 +88,8 @@ public class UserService {
     }
 
     // income
-    public void createIncome(String id, CreateIncomeDTO createIncomeDTO) {
-        var user = userRepository.findById(UUID.fromString(id))
+    public void createIncome(String userId, CreateIncomeDTO createIncomeDTO) {
+        var user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         var entity = new Income();
@@ -102,17 +102,17 @@ public class UserService {
         incomeRepository.save(entity);
     }
 
-    public List<IncomeResponseDTO> listIncomes(String id) {
-        var user = userRepository.findById(UUID.fromString(id))
+    public List<IncomeResponseDTO> listIncomes(String userId) {
+        var user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         
-        return user.getIncomes().stream().map(inc -> new IncomeResponseDTO(inc.getId().toString(), inc.getType(),
+        return user.getIncomes().stream().map(inc -> new IncomeResponseDTO(inc.getIncomeId().toString(), inc.getType(),
          inc.getSource(), inc.getValue(), inc.getDate())).toList();
     }
 
     // expense
-    public void createExpense(String id, CreateExpenseDTO createExpenseDTO) {
-        var user = userRepository.findById(UUID.fromString(id))
+    public void createExpense(String userId, CreateExpenseDTO createExpenseDTO) {
+        var user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         var entity = new Expense();
@@ -125,17 +125,17 @@ public class UserService {
         expenseRepository.save(entity);
     }
 
-    public List<ExpenseResponseDTO> listExpenses(String id) {
-        var user = userRepository.findById(UUID.fromString(id))
+    public List<ExpenseResponseDTO> listExpenses(String userId) {
+        var user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         
-        return user.getExpenses().stream().map(exp -> new ExpenseResponseDTO(exp.getId().toString(), exp.getType(),
+        return user.getExpenses().stream().map(exp -> new ExpenseResponseDTO(exp.getExpenseId().toString(), exp.getType(),
          exp.getValue(), exp.getP_method(), exp.getDate())).toList();   
     }
 
     // investment
-    public void createInvestment(String id, CreateInvestmentDTO createInvestmentDTO) {
-        var user = userRepository.findById(UUID.fromString(id))
+    public void createInvestment(String userId, CreateInvestmentDTO createInvestmentDTO) {
+        var user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         var entity = new Investment();
@@ -147,11 +147,11 @@ public class UserService {
         investmentRepository.save(entity);
     }
 
-    public List<InvestmentResponseDTO> listInvestments(String id) {
-        var user = userRepository.findById(UUID.fromString(id))
+    public List<InvestmentResponseDTO> listInvestments(String userId) {
+        var user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         
-        return user.getInvestments().stream().map(inv -> new InvestmentResponseDTO(inv.getId().toString(), inv.getType(),
+        return user.getInvestments().stream().map(inv -> new InvestmentResponseDTO(inv.getInvestmentId().toString(), inv.getType(),
          inv.getValue(), inv.getDate())).toList();
     }
 }

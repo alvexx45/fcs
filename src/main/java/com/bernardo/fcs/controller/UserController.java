@@ -21,7 +21,6 @@ import com.bernardo.fcs.controller.dto.ExpenseResponseDTO;
 import com.bernardo.fcs.controller.dto.IncomeResponseDTO;
 import com.bernardo.fcs.controller.dto.InvestmentResponseDTO;
 import com.bernardo.fcs.controller.dto.UpdateUserDTO;
-import com.bernardo.fcs.model.Investment;
 import com.bernardo.fcs.model.User;
 import com.bernardo.fcs.service.UserService;
 
@@ -40,9 +39,9 @@ public class UserController {
         return ResponseEntity.created(URI.create("/users/" + uid.toString())).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
-        var user = userService.getUserById(id);
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable("userId") String userId) {
+        var user = userService.getUserById(userId);
 
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
@@ -58,56 +57,56 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUserById(@PathVariable("id") String id, @RequestBody UpdateUserDTO updateUserDTO) {
-        userService.updateUserById(id, updateUserDTO);
+    @PutMapping("/{userId}")
+    public ResponseEntity<Void> updateUserById(@PathVariable("userId") String userId, @RequestBody UpdateUserDTO updateUserDTO) {
+        userService.updateUserById(userId, updateUserDTO);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") String id) {
-        userService.deleteById(id);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteById(@PathVariable("userId") String userId) {
+        userService.deleteUserById(userId);
 
         return ResponseEntity.noContent().build();
     }
 
     // income
-    @PostMapping("/{id}/income")
-    public ResponseEntity<Void> createIncome(@PathVariable("id") String id, @RequestBody CreateIncomeDTO createIncomeDTO) {
-        userService.createIncome(id, createIncomeDTO);
+    @PostMapping("/{userId}/income")
+    public ResponseEntity<Void> createIncome(@PathVariable("userId") String userId, @RequestBody CreateIncomeDTO createIncomeDTO) {
+        userService.createIncome(userId, createIncomeDTO);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/income")
-    public ResponseEntity<List<IncomeResponseDTO>> listIncomes(@PathVariable("id") String id) {
-        var incomes = userService.listIncomes(id);
+    @GetMapping("/{userId}/income")
+    public ResponseEntity<List<IncomeResponseDTO>> listIncomes(@PathVariable("userId") String userId) {
+        var incomes = userService.listIncomes(userId);
         return ResponseEntity.ok(incomes);
     }
 
     // expense
-    @PostMapping("/{id}/expense")
-    public ResponseEntity<Void> createExpense(@PathVariable("id") String id, @RequestBody CreateExpenseDTO createExpenseDTO) {
-        userService.createExpense(id, createExpenseDTO);
+    @PostMapping("/{userId}/expense")
+    public ResponseEntity<Void> createExpense(@PathVariable("userId") String userId, @RequestBody CreateExpenseDTO createExpenseDTO) {
+        userService.createExpense(userId, createExpenseDTO);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/expense")
-    public ResponseEntity<List<ExpenseResponseDTO>> listExpenses(@PathVariable("id") String id) {
-        var expenses = userService.listExpenses(id);
+    @GetMapping("/{userId}/expense")
+    public ResponseEntity<List<ExpenseResponseDTO>> listExpenses(@PathVariable("userId") String userId) {
+        var expenses = userService.listExpenses(userId);
         return ResponseEntity.ok(expenses);
     }
 
     // investment
-    @PostMapping("{id}/investment")
-    public ResponseEntity<Void> createInvestment(@PathVariable("id") String id, @RequestBody CreateInvestmentDTO createInvestmentDTO) {
-        userService.createInvestment(id, createInvestmentDTO);
+    @PostMapping("{userId}/investment")
+    public ResponseEntity<Void> createInvestment(@PathVariable("userId") String userId, @RequestBody CreateInvestmentDTO createInvestmentDTO) {
+        userService.createInvestment(userId, createInvestmentDTO);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/investment")
-    public ResponseEntity<List<InvestmentResponseDTO>> listInvestments(@PathVariable("id") String id) {
-        var investments = userService.listInvestments(id);
+    @GetMapping("/{userId}/investment")
+    public ResponseEntity<List<InvestmentResponseDTO>> listInvestments(@PathVariable("userId") String userId) {
+        var investments = userService.listInvestments(userId);
         return ResponseEntity.ok(investments);
     }
 }

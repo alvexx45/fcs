@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
 public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID expenseId;
     private String type;
     private BigDecimal value;
     private String p_method;
@@ -41,9 +41,9 @@ public class Expense {
 
     public Expense() {}
 
-    public Expense(UUID id, String type, BigDecimal value, String p_method, LocalDate date, User user,
+    public Expense(UUID expenseId, String type, BigDecimal value, String p_method, LocalDate date, User user,
             Instant creationTimestamp, Instant updateTimestamp) {
-        this.id = id;
+        this.expenseId = expenseId;
         this.type = type;
         this.value = value;
         this.p_method = p_method;
@@ -53,12 +53,12 @@ public class Expense {
         this.updateTimestamp = updateTimestamp;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getExpenseId() {
+        return expenseId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setExpenseId(UUID expenseId) {
+        this.expenseId = expenseId;
     }
 
     public String getType() {
