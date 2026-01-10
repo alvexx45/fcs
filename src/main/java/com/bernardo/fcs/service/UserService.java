@@ -8,11 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.bernardo.fcs.controller.dto.CreateExpenseDTO;
 import com.bernardo.fcs.controller.dto.CreateIncomeDTO;
+import com.bernardo.fcs.controller.dto.CreateInvestmentDTO;
 import com.bernardo.fcs.controller.dto.CreateUserDTO;
+import com.bernardo.fcs.controller.dto.ExpenseResponseDTO;
 import com.bernardo.fcs.controller.dto.IncomeResponseDTO;
+import com.bernardo.fcs.controller.dto.InvestmentResponseDTO;
 import com.bernardo.fcs.controller.dto.UpdateUserDTO;
+import com.bernardo.fcs.model.Expense;
 import com.bernardo.fcs.model.Income;
+import com.bernardo.fcs.model.Investment;
 import com.bernardo.fcs.model.User;
 import com.bernardo.fcs.repository.ExpenseRepository;
 import com.bernardo.fcs.repository.IncomeRepository;
@@ -102,5 +108,50 @@ public class UserService {
         
         return user.getIncomes().stream().map(inc -> new IncomeResponseDTO(inc.getId().toString(), inc.getType(),
          inc.getSource(), inc.getValue(), inc.getDate())).toList();
+    }
+
+    // expense
+    public void createExpense(String id, CreateExpenseDTO createExpenseDTO) {
+        var user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        var entity = new Expense();
+        entity.setType(createExpenseDTO.type());
+        entity.setValue(createExpenseDTO.value());
+        entity.setP_method(createExpenseDTO.p_method());
+        entity.setDate(createExpenseDTO.date());
+        entity.setUser(user);
+
+        expenseRepository.save(entity);
+    }
+
+    public List<ExpenseResponseDTO> listExpenses(String id) {
+        var user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        return user.getExpenses().stream().map(exp -> new ExpenseResponseDTO(exp.getId().toString(), exp.getType(),
+         exp.getValue(), exp.getP_method(), exp.getDate())).toList();   
+    }
+
+    // investment
+    public void createInvestment(String id, CreateInvestmentDTO createInvestmentDTO) {
+        var user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        var entity = new Investment();
+        entity.setType(createInvestmentDTO.type());
+        entity.setValue(createInvestmentDTO.value());
+        entity.setDate(createInvestmentDTO.date());
+        entity.setUser(user);
+
+        investmentRepository.save(entity);
+    }
+
+    public List<InvestmentResponseDTO> listInvestments(String id) {
+        var user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        return user.getInvestments().stream().map(inv -> new InvestmentResponseDTO(inv.getId().toString(), inv.getType(),
+         inv.getValue(), inv.getDate())).toList();
     }
 }
