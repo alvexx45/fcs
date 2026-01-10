@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardo.fcs.controller.dto.CreateUserDTO;
 import com.bernardo.fcs.controller.dto.UpdateUserDTO;
+import com.bernardo.fcs.controller.dto.UserResponseDTO;
 import com.bernardo.fcs.model.User;
 import com.bernardo.fcs.service.UserService;
 
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> listUsers() {
+    public ResponseEntity<List<UserResponseDTO>> listUsers() {
         var users = userService.listUsers();
 
         return ResponseEntity.ok(users);

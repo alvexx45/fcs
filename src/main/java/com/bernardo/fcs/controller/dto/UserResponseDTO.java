@@ -1,5 +1,3 @@
 package com.bernardo.fcs.controller.dto;
 
-public class UserResponseDTO {
-    
-}
+public record UserResponseDTO(String userId, String username) {}

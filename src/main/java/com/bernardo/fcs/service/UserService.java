@@ -3,11 +3,13 @@ package com.bernardo.fcs.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.bernardo.fcs.controller.dto.CreateUserDTO;
 import com.bernardo.fcs.controller.dto.UpdateUserDTO;
+import com.bernardo.fcs.controller.dto.UserResponseDTO;
 import com.bernardo.fcs.model.User;
 import com.bernardo.fcs.repository.UserRepository;
 
@@ -34,8 +36,14 @@ public class UserService {
         return userRepository.findById(UUID.fromString(userId));
     }
 
-    public List<User> listUsers() {
-        return userRepository.findAll();
+    public List<UserResponseDTO> listUsers() {
+        return userRepository.findAll()
+            .stream()
+            .map(user -> new UserResponseDTO(
+                user.getUserId().toString(), 
+                user.getUsername()
+            ))
+            .toList();
     }
 
     public void updateUserById(String userId, UpdateUserDTO updateUserDTO) {
