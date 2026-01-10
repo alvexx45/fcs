@@ -3,7 +3,6 @@ package com.bernardo.fcs.controller;
 import java.net.URI;
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardo.fcs.controller.dto.CreateIncomeDTO;
 import com.bernardo.fcs.controller.dto.CreateUserDTO;
+import com.bernardo.fcs.controller.dto.IncomeResponseDTO;
 import com.bernardo.fcs.controller.dto.UpdateUserDTO;
 import com.bernardo.fcs.model.User;
 import com.bernardo.fcs.service.UserService;
@@ -23,6 +23,7 @@ import com.bernardo.fcs.service.UserService;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    // user
     private UserService userService;
     public UserController(UserService userService) {
         this.userService = userService;
@@ -66,10 +67,18 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    // income
     @PostMapping("/{id}/income")
     public ResponseEntity<Void> createIncome(@PathVariable("id") String id, @RequestBody CreateIncomeDTO createIncomeDTO) {
         userService.createIncome(id, createIncomeDTO);
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{id}/income")
+    public ResponseEntity<List<IncomeResponseDTO>> listIncomes(@PathVariable("id") String id) {
+        var incomes = userService.listIncomes(id);
+        return ResponseEntity.ok(incomes);
+    }
+
+    // expense
 }

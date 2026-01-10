@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.bernardo.fcs.controller.dto.CreateIncomeDTO;
 import com.bernardo.fcs.controller.dto.CreateUserDTO;
+import com.bernardo.fcs.controller.dto.IncomeResponseDTO;
 import com.bernardo.fcs.controller.dto.UpdateUserDTO;
 import com.bernardo.fcs.model.Income;
 import com.bernardo.fcs.model.User;
@@ -33,6 +34,7 @@ public class UserService {
         this.expenseRepository = expenseRepository;
     }
 
+    // user
     public UUID createUser(CreateUserDTO createUserDTO) {
         var entity = new User();
         entity.setUsername(createUserDTO.username());
@@ -79,6 +81,7 @@ public class UserService {
         }
     }
 
+    // income
     public void createIncome(String id, CreateIncomeDTO createIncomeDTO) {
         var user = userRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -91,5 +94,13 @@ public class UserService {
         entity.setUser(user);
 
         incomeRepository.save(entity);
+    }
+
+    public List<IncomeResponseDTO> listIncomes(String id) {
+        var user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        return user.getIncomes().stream().map(inc -> new IncomeResponseDTO(inc.getId().toString(), inc.getType(),
+         inc.getSource(), inc.getValue(), inc.getDate())).toList();
     }
 }

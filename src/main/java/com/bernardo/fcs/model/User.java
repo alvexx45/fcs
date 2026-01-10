@@ -7,8 +7,6 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,13 +30,10 @@ public class User {
     private Instant updateTimestamp;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-    @JsonManagedReference("user-expenses")
     private List<Expense> expenses;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-    @JsonManagedReference("user-incomes")
     private List<Income> incomes;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-    @JsonManagedReference("user-investments")
     private List<Investment> investments;
 
     public User() {}
