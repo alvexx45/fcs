@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCS - Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar { min-height: 100vh; background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); }
+        .nav-link { color: rgba(255,255,255,0.8); transition: all 0.3s; }
+        .nav-link:hover, .nav-link.active { color: #fff; background-color: rgba(255,255,255,0.1); border-radius: 8px; }
+        .card { border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); }
+        .stat-card { border-left: 4px solid; }
+        .stat-card.expenses { border-color: #dc3545; }
+        .stat-card.income { border-color: #28a745; }
+        .stat-card.investments { border-color: #007bff; }
+        .table-actions button { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-3">
+                <div class="position-sticky">
+                    <h4 class="text-white text-center mb-4"><i class="bi bi-wallet2"></i> FCS</h4>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">
+                            <a class="nav-link active" href="#" data-section="overview">
+                                <i class="bi bi-speedometer2"></i> Visão Geral
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link" href="#" data-section="expenses">
+                                <i class="bi bi-cart-dash"></i> Despesas
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link" href="#" data-section="income">
+                                <i class="bi bi-cash-coin"></i> Receitas
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link" href="#" data-section="investments">
+                                <i class="bi bi-graph-up-arrow"></i> Investimentos
+                            </a>
+                        </li>
+                        <li class="nav-item mt-5">
+                            <a class="nav-link text-danger" href="#" id="logoutBtn">
+                                <i class="bi bi-box-arrow-right"></i> Sair
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                
+                <!-- Overview Section -->
+                <section id="overview" class="content-section">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Visão Geral</h2>
+                        <span id="currentDate" class="text-muted"></span>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="card stat-card expenses">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="text-muted mb-1">Total Despesas</p>
+                                            <h3 class="mb-0" id="totalExpenses">R$ 0,00</h3>
+                                        </div>
+                                        <i class="bi bi-cart-dash text-danger" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card stat-card income">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="text-muted mb-1">Total Receitas</p>
+                                            <h3 class="mb-0 text-success" id="totalIncome">R$ 0,00</h3>
+                                        </div>
+                                        <i class="bi bi-cash-coin text-success" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card stat-card investments">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="text-muted mb-1">Total Investimentos</p>
+                                            <h3 class="mb-0 text-primary" id="totalInvestments">R$ 0,00</h3>
+                                        </div>
+                                        <i class="bi bi-graph-up-arrow text-primary" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Balance Card -->
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <p class="text-muted mb-1">Saldo Total</p>
+                            <h2 id="totalBalance" class="mb-0">R$ 0,00</h2>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Expenses Section -->
+                <section id="expenses" class="content-section d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2><i class="bi bi-cart-dash text-danger"></i> Despesas</h2>
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#expenseModal" id="newExpenseBtn">
+                            <i class="bi bi-plus-circle"></i> Nova Despesa
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Valor</th>
+                                            <th>Data</th>
+                                            <th>Categoria</th>
+                                            <th class="text-end">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="expensesTableBody">
+                                        <!-- Dados serão inseridos via JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Income Section -->
+                <section id="income" class="content-section d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2><i class="bi bi-cash-coin text-success"></i> Receitas</h2>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#incomeModal" id="newIncomeBtn">
+                            <i class="bi bi-plus-circle"></i> Nova Receita
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Valor</th>
+                                            <th>Data</th>
+                                            <th>Fonte</th>
+                                            <th class="text-end">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="incomeTableBody">
+                                        <!-- Dados serão inseridos via JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Investments Section -->
+                <section id="investments" class="content-section d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2><i class="bi bi-graph-up-arrow text-primary"></i> Investimentos</h2>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#investmentModal" id="newInvestmentBtn">
+                            <i class="bi bi-plus-circle"></i> Novo Investimento
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Valor Investido</th>
+                                            <th>Data</th>
+                                            <th>Tipo</th>
+                                            <th class="text-end">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="investmentsTableBody">
+                                        <!-- Dados serão inseridos via JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Expense Modal -->
+    <div class="modal fade" id="expenseModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="expenseModalLabel">Nova Despesa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="expenseForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="expenseId">
+                        <div class="mb-3">
+                            <label for="expenseDescription" class="form-label">Descrição</label>
+                            <input type="text" class="form-control" id="expenseDescription" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expenseValue" class="form-label">Valor</label>
+                            <input type="number" step="0.01" class="form-control" id="expenseValue" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expenseDate" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="expenseDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expenseCategory" class="form-label">Categoria</label>
+                            <input type="text" class="form-control" id="expenseCategory">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Income Modal -->
+    <div class="modal fade" id="incomeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="incomeModalLabel">Nova Receita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="incomeForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="incomeId">
+                        <div class="mb-3">
+                            <label for="incomeDescription" class="form-label">Descrição</label>
+                            <input type="text" class="form-control" id="incomeDescription" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="incomeValue" class="form-label">Valor</label>
+                            <input type="number" step="0.01" class="form-control" id="incomeValue" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="incomeDate" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="incomeDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="incomeSource" class="form-label">Fonte</label>
+                            <input type="text" class="form-control" id="incomeSource">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Investment Modal -->
+    <div class="modal fade" id="investmentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="investmentModalLabel">Novo Investimento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="investmentForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="investmentId">
+                        <div class="mb-3">
+                            <label for="investmentName" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="investmentName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="investmentValue" class="form-label">Valor Investido</label>
+                            <input type="number" step="0.01" class="form-control" id="investmentValue" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="investmentDate" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="investmentDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="investmentType" class="form-label">Tipo</label>
+                            <select class="form-select" id="investmentType" required>
+                                <option value="">Selecione...</option>
+                                <option value="Ações">Ações</option>
+                                <option value="Renda Fixa">Renda Fixa</option>
+                                <option value="Fundos">Fundos</option>
+                                <option value="Criptomoedas">Criptomoedas</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Seu JavaScript aqui -->
+    <script src="script/dashboard.js"></script>
+</body>
+</html>
