@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.bernardo.fcs.controller.dto.CreateUserDTO;
 import com.bernardo.fcs.controller.dto.UpdateUserDTO;
+import com.bernardo.fcs.controller.dto.UserLoginDTO;
 import com.bernardo.fcs.controller.dto.UserResponseDTO;
 import com.bernardo.fcs.model.User;
 import com.bernardo.fcs.repository.UserRepository;
@@ -24,11 +28,30 @@ public class UserService {
     public UUID createUser(CreateUserDTO createUserDTO) {
         var entity = new User();
         entity.setUsername(createUserDTO.username());
-        entity.setPassword(createUserDTO.password());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        entity.setPassword(encoder.encode(createUserDTO.password()));
 
         var userSaved = userRepository.save(entity);
         
         return userSaved.getUserId();
+    }
+
+    public ResponseEntity<Void> login(@RequestBody UserLoginDTO userLoginDTO) {
+        if (userLoginDTO.username() != null) {
+            var username = userRepository.findByUsername(userLoginDTO.username());
+            if (username.isPresent()) {
+                var user = username.get();
+                if (userLoginDTO.password() != null) {
+                    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        
+                    if (encoder.matches(userLoginDTO.password(), user.getPassword())) {
+                        return ResponseEntity.ok().build();
+                    }
+                }
+            }
+        }
+
+        return ResponseEntity.status(401).build();
     }
 
     public Optional<User> getUserById(String userId) {
