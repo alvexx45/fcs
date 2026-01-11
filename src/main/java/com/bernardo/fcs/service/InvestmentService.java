@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.bernardo.fcs.controller.dto.CreateInvestmentDTO;
 import com.bernardo.fcs.controller.dto.InvestmentResponseDTO;
+import com.bernardo.fcs.controller.dto.UpdateInvesmentDTO;
 import com.bernardo.fcs.model.Investment;
 import com.bernardo.fcs.repository.InvestmentRepository;
 import com.bernardo.fcs.repository.UserRepository;
@@ -44,17 +45,35 @@ public class InvestmentService {
          inv.getValue(), inv.getDate())).toList();
     }
 
-    public void deleteInvestmentById(String userId, String expenseId) {
-        var uid = UUID.fromString(userId);
-        var userExists = userRepository.findById(uid);
-
-        var inv_id = UUID.fromString(expenseId);
-        var investmentExists = investmentRepository.findById(inv_id);
-
-        var isInvestmentFromUser = investmentExists.isPresent() && investmentExists.get().getUser().getUserId().equals(uid);
-
-        if (userExists.isPresent() && investmentExists.isPresent() && isInvestmentFromUser) {
-            investmentRepository.deleteById(inv_id);
+    public void updateIncomeById(String userId, String investmentId, UpdateInvesmentDTO updateInvesmentDTO) {
+        var investment = investmentRepository.findById(UUID.fromString(investmentId))
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        if (!investment.getUser().getUserId().equals(UUID.fromString(userId))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+
+        if (updateInvesmentDTO.type() != null) {
+            investment.setType(updateInvesmentDTO.type());
+        }
+        if (updateInvesmentDTO.value() != null) {
+            investment.setValue(updateInvesmentDTO.value());
+        }
+        if (updateInvesmentDTO.date() != null) {
+            investment.setDate(updateInvesmentDTO.date());
+        }
+
+        investmentRepository.save(investment);
+    }
+
+    public void deleteInvestmentById(String userId, String investmentId) {
+        var investment = investmentRepository.findById(UUID.fromString(investmentId))
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        if (!investment.getUser().getUserId().equals(UUID.fromString(userId))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        
+        investmentRepository.delete(investment);
     }
 }

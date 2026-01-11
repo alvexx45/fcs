@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.bernardo.fcs.controller.dto.CreateExpenseDTO;
 import com.bernardo.fcs.controller.dto.ExpenseResponseDTO;
+import com.bernardo.fcs.controller.dto.UpdateExpenseDTO;
 import com.bernardo.fcs.model.Expense;
 import com.bernardo.fcs.repository.ExpenseRepository;
 import com.bernardo.fcs.repository.UserRepository;
@@ -45,17 +46,35 @@ public class ExpenseService {
          exp.getValue(), exp.getP_method(), exp.getDate())).toList();   
     }
 
-    public void deleteExpenseById(String userId, String expenseId) {
-        var uid = UUID.fromString(userId);
-        var userExists = userRepository.findById(uid);
-
-        var exp_id = UUID.fromString(expenseId);
-        var expenseExists = expenseRepository.findById(exp_id);
-
-        var isExpenseFromUser = expenseExists.isPresent() && expenseExists.get().getUser().getUserId().equals(uid);
-
-        if (userExists.isPresent() && expenseExists.isPresent() && isExpenseFromUser) {
-            expenseRepository.deleteById(exp_id);
+    public void updateExpenseById(String userId, String expenseId, UpdateExpenseDTO updateExpenseDTO) {
+        var expense = expenseRepository.findById(UUID.fromString(expenseId))
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        if (!expense.getUser().getUserId().equals(UUID.fromString(userId))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+
+        if (updateExpenseDTO.type() != null) {
+            expense.setType(updateExpenseDTO.type());
+        }
+        if (updateExpenseDTO.value() != null) {
+            expense.setValue(updateExpenseDTO.value());
+        }
+        if (updateExpenseDTO.date() != null) {
+            expense.setDate(updateExpenseDTO.date());
+        }
+
+        expenseRepository.save(expense);
+    }
+
+    public void deleteExpenseById(String userId, String expenseId) {
+        var expense = expenseRepository.findById(UUID.fromString(expenseId))
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        if (!expense.getUser().getUserId().equals(UUID.fromString(userId))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        
+        expenseRepository.delete(expense);
     }
 }

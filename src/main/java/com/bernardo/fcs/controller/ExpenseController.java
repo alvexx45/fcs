@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardo.fcs.controller.dto.CreateExpenseDTO;
 import com.bernardo.fcs.controller.dto.ExpenseResponseDTO;
+import com.bernardo.fcs.controller.dto.UpdateExpenseDTO;
 import com.bernardo.fcs.service.ExpenseService;
 
 @RestController
@@ -33,6 +35,13 @@ public class ExpenseController {
     public ResponseEntity<List<ExpenseResponseDTO>> listExpenses(@PathVariable("userId") String userId) {
         var expenses = expenseService.listExpenses(userId);
         return ResponseEntity.ok(expenses);
+    }
+
+    @PutMapping("/{expenseId}")
+    public ResponseEntity<Void> updateExpenseById(@PathVariable("userId") String userId, @PathVariable("expenseId") String expenseId, @RequestBody UpdateExpenseDTO updateExpenseDTO) {
+        expenseService.updateExpenseById(userId, expenseId, updateExpenseDTO);
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{expenseId}")
