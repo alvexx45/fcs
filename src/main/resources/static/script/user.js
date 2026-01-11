@@ -42,3 +42,48 @@ async function createUser(event) {
         alert('Erro ao conectar com o servidor: ' + error.message);
     }
 }
+
+// Função para fazer login
+async function handleLogin(event) {
+    event.preventDefault();
+    
+    try {
+        // Pega os valores dos inputs (mesmos nomes do DTO: username e password)
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        // Cria o objeto conforme UserLoginDTO
+        const loginData = {
+            username: username,
+            password: password
+        };
+        
+        // TODO: Implementar requisição POST para /login ou /users/login
+        console.log('TODO: Implementar login', loginData);
+        
+        // Exemplo de implementação:
+        /*
+        const response = await fetch('http://localhost:8080/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(loginData)
+        });
+        
+        if (response.ok) {
+            const user = await response.json();
+            // Salvar token/userId no localStorage
+            localStorage.setItem('userId', user.id);
+            // Redirecionar para dashboard
+            window.location.href = '/dashboard.html';
+        } else {
+            alert('Usuário ou senha incorretos!');
+        }
+        */
+        
+    } catch(error) {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor: ' + error.message);
+    }
+}
