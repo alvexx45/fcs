@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.bernardo.fcs.controller.dto.CreateIncomeDTO;
 import com.bernardo.fcs.controller.dto.IncomeResponseDTO;
+import com.bernardo.fcs.controller.dto.UpdateIncomeDTO;
 import com.bernardo.fcs.model.Income;
 import com.bernardo.fcs.repository.IncomeRepository;
 import com.bernardo.fcs.repository.UserRepository;
@@ -46,11 +47,40 @@ public class IncomeService {
          inc.getSource(), inc.getValue(), inc.getDate())).toList();
     }
 
-    public void deleteIncomeById(String userId, String expenseId) {
+    public void updateIncomeById(String userId, String incomeId, UpdateIncomeDTO updateIncomeDTO) {
         var uid = UUID.fromString(userId);
         var userExists = userRepository.findById(uid);
 
-        var inc_id = UUID.fromString(expenseId);
+        var inc_id = UUID.fromString(incomeId);
+        var incomeExists = incomeRepository.findById(inc_id);
+
+        var isExpenseFromUser = incomeExists.isPresent() && incomeExists.get().getUser().getUserId().equals(uid);
+
+        if (userExists.isPresent() && incomeExists.isPresent() && isExpenseFromUser) {
+            var income = incomeExists.get();
+
+            if (updateIncomeDTO.type() != null) {
+                income.setType(updateIncomeDTO.type());
+            }
+            if (updateIncomeDTO.source() != null) {
+                income.setSource(updateIncomeDTO.source());
+            }
+            if (updateIncomeDTO.value() != null) {
+                income.setValue(updateIncomeDTO.value());
+            }
+            if (updateIncomeDTO.date() != null) {
+                income.setDate(updateIncomeDTO.date());
+            }
+
+            incomeRepository.save(income);
+        }
+    }
+
+    public void deleteIncomeById(String userId, String incomeId) {
+        var uid = UUID.fromString(userId);
+        var userExists = userRepository.findById(uid);
+
+        var inc_id = UUID.fromString(incomeId);
         var incomeExists = incomeRepository.findById(inc_id);
 
         var isExpenseFromUser = incomeExists.isPresent() && incomeExists.get().getUser().getUserId().equals(uid);
