@@ -77,7 +77,11 @@ try {
         }
 
         if (response.ok) {
-            alert(incomeId ? 'Receita atualizada com sucesso!' : 'Receita criada com sucesso!');
+            showNotification(
+                incomeId ? 'Receita atualizada com sucesso!' : 'Receita criada com sucesso!',
+                'success',
+                'success'
+            );
 
             // Fecha o modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('incomeModal'));
@@ -93,12 +97,12 @@ try {
             loadOverviewData();
         } else {
             const error = await response.text();
-            alert('Erro ao salvar receita: ' + error);
+            showNotification('Erro ao salvar receita: ' + error, 'error', 'success');
         }
 
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao conectar com o servidor: ' + error.message);
+        showNotification('Erro ao conectar com o servidor: ' + error.message, 'error', 'success');
     }
 });
 
@@ -111,15 +115,15 @@ async function deleteIncome(incomeId) {
         });
         
         if (response.ok) {
-            alert('Receita excluída com sucesso!');
+            showNotification('Receita excluída com sucesso!', 'success', 'success');
             loadIncome();
             loadOverviewData();
         } else {
-            alert('Erro ao excluir receita');
+            showNotification('Erro ao excluir receita', 'error', 'success');
         }
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao conectar com o servidor');
+        showNotification('Erro ao conectar com o servidor', 'error', 'success');
     }
 }
 
@@ -133,7 +137,7 @@ async function editincome(incomeId) {
         const income = incomes.find(e => e.incomeId === incomeId);
         
         if (!income) {
-            alert('Receita não encontrada!');
+            showNotification('Receita não encontrada!', 'error', 'success');
             return;
         }
         
@@ -153,7 +157,7 @@ async function editincome(incomeId) {
         
     } catch (error) {
         console.error('Erro ao carregar receita:', error);
-        alert('Erro ao carregar dados da receita');
+        showNotification('Erro ao carregar dados da receita', 'error', 'success');
     }
 }
 

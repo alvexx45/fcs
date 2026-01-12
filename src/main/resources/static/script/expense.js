@@ -79,7 +79,11 @@ document.getElementById('expenseForm').addEventListener('submit', async function
         }
 
         if (response.ok) {
-            alert(expenseId ? 'Despesa atualizada com sucesso!' : 'Despesa criada com sucesso!');
+            showNotification(
+                expenseId ? 'Despesa atualizada com sucesso!' : 'Despesa criada com sucesso!',
+                'success',
+                'danger'
+            );
 
             // Fecha o modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('expenseModal'));
@@ -95,12 +99,12 @@ document.getElementById('expenseForm').addEventListener('submit', async function
             loadOverviewData();
         } else {
             const error = await response.text();
-            alert('Erro ao salvar despesa: ' + error);
+            showNotification('Erro ao salvar despesa: ' + error, 'error', 'danger');
         }
 
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao conectar com o servidor: ' + error.message);
+        showNotification('Erro ao conectar com o servidor: ' + error.message, 'error', 'danger');
     }
 });
 
@@ -113,15 +117,15 @@ async function deleteExpense(expenseId) {
         });
 
         if (response.ok) {
-            alert('Despesa excluída com sucesso!');
+            showNotification('Despesa excluída com sucesso!', 'success', 'danger');
             loadExpenses();
             loadOverviewData();
         } else {
-            alert('Erro ao excluir despesa');
+            showNotification('Erro ao excluir despesa', 'error', 'danger');
         }
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao conectar com o servidor');
+        showNotification('Erro ao conectar com o servidor', 'error', 'danger');
     }
 }
 
@@ -135,7 +139,7 @@ async function editExpense(expenseId) {
         const expense = expenses.find(e => e.expenseId === expenseId);
         
         if (!expense) {
-            alert('Despesa não encontrada!');
+            showNotification('Despesa não encontrada!', 'error', 'danger');
             return;
         }
         
@@ -155,7 +159,7 @@ async function editExpense(expenseId) {
         
     } catch (error) {
         console.error('Erro ao carregar despesa:', error);
-        alert('Erro ao carregar dados da despesa');
+        showNotification('Erro ao carregar dados da despesa', 'error', 'danger');
     }
 }
 

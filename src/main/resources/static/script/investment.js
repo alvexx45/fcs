@@ -76,7 +76,11 @@ document.getElementById('investmentForm').addEventListener('submit', async funct
         }
 
         if (response.ok) {
-            alert(investmentId ? 'Investmento atualizado com sucesso!' : 'Investmento criado com sucesso!');
+            showNotification(
+                investmentId ? 'Investimento atualizado com sucesso!' : 'Investimento criado com sucesso!',
+                'success',
+                'primary'
+            );
 
             // Fecha o modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('investmentModal'));
@@ -92,12 +96,12 @@ document.getElementById('investmentForm').addEventListener('submit', async funct
             loadOverviewData();
         } else {
             const error = await response.text();
-            alert('Erro ao salvar investimento: ' + error);
+            showNotification('Erro ao salvar investimento: ' + error, 'error', 'primary');
         }
 
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao conectar com o servidor: ' + error.message);
+        showNotification('Erro ao conectar com o servidor: ' + error.message, 'error', 'primary');
     }
 });
 
@@ -110,15 +114,15 @@ async function deleteInvestment(investmentId) {
         });
         
         if (response.ok) {
-            alert('Investimento excluído com sucesso!');
+            showNotification('Investimento excluído com sucesso!', 'success', 'primary');
             loadInvestments();
             loadOverviewData();
         } else {
-            alert('Erro ao excluir investimento');
+            showNotification('Erro ao excluir investimento', 'error', 'primary');
         }
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao conectar com o servidor');
+        showNotification('Erro ao conectar com o servidor', 'error', 'primary');
     }
 }
 
@@ -132,7 +136,7 @@ async function editInvestment(investmentId) {
         const investment = investments.find(e => e.investmentId === investmentId);
         
         if (!investment) {
-            alert('Investimento não encontrada!');
+            showNotification('Investimento não encontrado!', 'error', 'primary');
             return;
         }
         
@@ -151,7 +155,7 @@ async function editInvestment(investmentId) {
         
     } catch (error) {
         console.error('Erro ao carregar investimento:', error);
-        alert('Erro ao carregar dados da investimento');
+        showNotification('Erro ao carregar dados do investimento', 'error', 'primary');
     }
 }
 
