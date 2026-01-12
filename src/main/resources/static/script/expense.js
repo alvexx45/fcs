@@ -6,15 +6,15 @@ async function loadExpenses() {
     try {
         const response = await fetch(`http://localhost:8080/users/${userId}/expense`);
         const expenses = await response.json();
-        
+
         const tbody = document.getElementById('expensesTableBody');
         tbody.innerHTML = ''; // Limpa tabela
-        
+
         if (expenses.length === 0) {
             tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Nenhuma despesa cadastrada</td></tr>';
             return;
         }
-        
+
         expenses.forEach(expense => {
             const row = `
                 <tr>
@@ -40,20 +40,78 @@ async function loadExpenses() {
 }
 
 // Form submit
-document.getElementById('expenseForm').addEventListener('submit', async function(e) {
+document.getElementById('expenseForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    // TODO: Implementar POST/PUT para criar/editar despesa
-    console.log('TODO: Salvar despesa');
+
+    try {
+        const type = document.getElementById('expenseType').value;
+        const p_method = document.getElementById('expensePMethod').value;
+        const value = document.getElementById('expenseValue').value;
+        const date = document.getElementById('expenseDate').value;
+        const expenseId = document.getElementById('expenseId').value; // Pega o ID (vazio se for criação)
+
+        const expenseData = {
+            type: type,
+            p_method: p_method,
+            value: value,
+            date: date
+        }
+
+        let response;
+        
+        // Se tem ID, é edição (PUT), se não tem, é criação (POST)
+        if (expenseId) {
+            response = await fetch(`http://localhost:8080/users/${userId}/expense/${expenseId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(expenseData)
+            });
+        } else {
+            response = await fetch(`http://localhost:8080/users/${userId}/expense`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(expenseData)
+            });
+        }
+
+        if (response.ok) {
+            alert(expenseId ? 'Despesa atualizada com sucesso!' : 'Despesa criada com sucesso!');
+
+            // Fecha o modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('expenseModal'));
+            modal.hide();
+
+            // Limpa o formulário
+            document.getElementById('expenseForm').reset();
+
+            // Recarrega a lista de despesas
+            loadExpenses();
+
+            // Atualiza os totais
+            loadOverviewData();
+        } else {
+            const error = await response.text();
+            alert('Erro ao salvar despesa: ' + error);
+        }
+
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor: ' + error.message);
+    }
 });
 
 async function deleteExpense(expenseId) {
     if (!confirm('Deseja realmente excluir esta despesa?')) return;
-    
+
     try {
         const response = await fetch(`http://localhost:8080/users/${userId}/expense/${expenseId}`, {
             method: 'DELETE'
         });
-        
+
         if (response.ok) {
             alert('Despesa excluída com sucesso!');
             loadExpenses();
@@ -67,8 +125,49 @@ async function deleteExpense(expenseId) {
     }
 }
 
-function editExpense(expenseId) {
-    // TODO: Implementar edição
-    console.log('Editar despesa:', expenseId);
-    alert('Funcionalidade de edição será implementada em breve!');
+async function editExpense(expenseId) {
+    try {
+        // Busca os dados da despesa
+        const response = await fetch(`http://localhost:8080/users/${userId}/expense`);
+        const expenses = await response.json();
+        
+        // Encontra a despesa específica
+        const expense = expenses.find(e => e.expenseId === expenseId);
+        
+        if (!expense) {
+            alert('Despesa não encontrada!');
+            return;
+        }
+        
+        // Preenche o formulário com os dados
+        document.getElementById('expenseId').value = expense.expenseId;
+        document.getElementById('expenseType').value = expense.type;
+        document.getElementById('expensePMethod').value = expense.p_method || '';
+        document.getElementById('expenseValue').value = expense.value;
+        document.getElementById('expenseDate').value = expense.date;
+        
+        // Muda o título do modal
+        document.getElementById('expenseModalLabel').textContent = 'Editar Despesa';
+        
+        // Abre o modal
+        const modal = new bootstrap.Modal(document.getElementById('expenseModal'));
+        modal.show();
+        
+    } catch (error) {
+        console.error('Erro ao carregar despesa:', error);
+        alert('Erro ao carregar dados da despesa');
+    }
 }
+
+// Limpa o formulário e reseta o título quando o modal é fechado
+document.getElementById('expenseModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('expenseForm').reset();
+    document.getElementById('expenseModalLabel').textContent = 'Nova Despesa';
+});
+
+// Limpa o formulário quando clicar em "Nova Despesa"
+document.getElementById('newExpenseBtn').addEventListener('click', function () {
+    document.getElementById('expenseForm').reset();
+    document.getElementById('expenseId').value = ''; // Garante que está vazio
+    document.getElementById('expenseModalLabel').textContent = 'Nova Despesa';
+});
