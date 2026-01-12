@@ -41,8 +41,65 @@ async function loadIncome() {
 
 document.getElementById('incomeForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    // TODO: Implementar POST/PUT para criar/editar receita
-    console.log('TODO: Salvar receita');
+try {
+        const type = document.getElementById('incomeType').value;
+        const source = document.getElementById('incomeSource').value;
+        const value = document.getElementById('incomeValue').value;
+        const date = document.getElementById('incomeDate').value;
+        const incomeId = document.getElementById('incomeId').value; // Pega o ID (vazio se for criação)
+
+        const incomeData = {
+            type: type,
+            source: source,
+            value: value,
+            date: date
+        }
+
+        let response;
+        
+        // Se tem ID, é edição (PUT), se não tem, é criação (POST)
+        if (incomeId) {
+            response = await fetch(`http://localhost:8080/users/${userId}/income/${incomeId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(incomeData)
+            });
+        } else {
+            response = await fetch(`http://localhost:8080/users/${userId}/income`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(incomeData)
+            });
+        }
+
+        if (response.ok) {
+            alert(incomeId ? 'Receita atualizada com sucesso!' : 'Receita criada com sucesso!');
+
+            // Fecha o modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('incomeModal'));
+            modal.hide();
+
+            // Limpa o formulário
+            document.getElementById('incomeForm').reset();
+
+            // Recarrega a lista de despesas
+            loadIncome();
+
+            // Atualiza os totais
+            loadOverviewData();
+        } else {
+            const error = await response.text();
+            alert('Erro ao salvar receita: ' + error);
+        }
+
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor: ' + error.message);
+    }
 });
 
 async function deleteIncome(incomeId) {
@@ -66,8 +123,49 @@ async function deleteIncome(incomeId) {
     }
 }
 
-function editIncome(incomeId) {
-    // TODO: Implementar edição
-    console.log('Editar receita:', incomeId);
-    alert('Funcionalidade de edição será implementada em breve!');
+async function editincome(incomeId) {
+    try {
+        // Busca os dados da receita
+        const response = await fetch(`http://localhost:8080/users/${userId}/income`);
+        const incomes = await response.json();
+        
+        // Encontra a receita específica
+        const income = incomes.find(e => e.incomeId === incomeId);
+        
+        if (!income) {
+            alert('Receita não encontrada!');
+            return;
+        }
+        
+        // Preenche o formulário com os dados
+        document.getElementById('incomeId').value = income.incomeId;
+        document.getElementById('incomeType').value = income.type;
+        document.getElementById('incomeSource').value = income.source || '';
+        document.getElementById('incomeValue').value = income.value;
+        document.getElementById('incomeDate').value = income.date;
+        
+        // Muda o título do modal
+        document.getElementById('incomeModalLabel').textContent = 'Editar Receita';
+        
+        // Abre o modal
+        const modal = new bootstrap.Modal(document.getElementById('incomeModal'));
+        modal.show();
+        
+    } catch (error) {
+        console.error('Erro ao carregar receita:', error);
+        alert('Erro ao carregar dados da receita');
+    }
 }
+
+// Limpa o formulário e reseta o título quando o modal é fechado
+document.getElementById('incomeModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('incomeForm').reset();
+    document.getElementById('incomeModalLabel').textContent = 'Nova Receita';
+});
+
+// Limpa o formulário quando clicar em "Nova Receita"
+document.getElementById('newincomeBtn').addEventListener('click', function () {
+    document.getElementById('incomeForm').reset();
+    document.getElementById('incomeId').value = ''; // Garante que está vazio
+    document.getElementById('incomeModalLabel').textContent = 'Nova Receita';
+});
