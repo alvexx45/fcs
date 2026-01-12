@@ -1,5 +1,6 @@
 package com.bernardo.fcs.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,5 +76,14 @@ public class InvestmentService {
         }
         
         investmentRepository.delete(investment);
+    }
+
+    public BigDecimal sumInvestments(String userId) {
+        var user = userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return user.getInvestments().stream()
+                .map(Investment::getValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

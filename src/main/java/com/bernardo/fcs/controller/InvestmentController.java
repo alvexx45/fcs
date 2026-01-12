@@ -1,5 +1,6 @@
 package com.bernardo.fcs.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -49,5 +50,11 @@ public class InvestmentController {
         investmentService.deleteInvestmentById(userId, investmentId);
         
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<BigDecimal> sumInvestments(@PathVariable("userId") String userId) {
+        var total = investmentService.sumInvestments(userId);
+        return ResponseEntity.ok(total);
     }
 }

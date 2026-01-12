@@ -97,77 +97,6 @@ function loadInvestments() {
     console.log('TODO: Carregar investimentos');
 }
 
-
-// ========================================
-// EXPENSES CRUD
-// ========================================
-
-// Form submit
-document.getElementById('expenseForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    // TODO: Implementar POST/PUT para criar/editar despesa
-    console.log('TODO: Salvar despesa');
-});
-
-function editExpense(id) {
-    // TODO: Buscar despesa por ID e preencher modal
-    console.log('TODO: Editar despesa', id);
-}
-
-function deleteExpense(id) {
-    // TODO: Deletar despesa
-    if (confirm('Deseja realmente excluir esta despesa?')) {
-        console.log('TODO: Deletar despesa', id);
-    }
-}
-
-
-// ========================================
-// INCOME CRUD
-// ========================================
-
-document.getElementById('incomeForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    // TODO: Implementar POST/PUT para criar/editar receita
-    console.log('TODO: Salvar receita');
-});
-
-function editIncome(id) {
-    // TODO: Buscar receita por ID e preencher modal
-    console.log('TODO: Editar receita', id);
-}
-
-function deleteIncome(id) {
-    // TODO: Deletar receita
-    if (confirm('Deseja realmente excluir esta receita?')) {
-        console.log('TODO: Deletar receita', id);
-    }
-}
-
-
-// ========================================
-// INVESTMENTS CRUD
-// ========================================
-
-document.getElementById('investmentForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    // TODO: Implementar POST/PUT para criar/editar investimento
-    console.log('TODO: Salvar investimento');
-});
-
-function editInvestment(id) {
-    // TODO: Buscar investimento por ID e preencher modal
-    console.log('TODO: Editar investimento', id);
-}
-
-function deleteInvestment(id) {
-    // TODO: Deletar investimento
-    if (confirm('Deseja realmente excluir este investimento?')) {
-        console.log('TODO: Deletar investimento', id);
-    }
-}
-
-
 // ========================================
 // HELPER FUNCTIONS
 // ========================================
@@ -181,30 +110,4 @@ function formatCurrency(value) {
 
 function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString('pt-BR');
-}
-
-// Exemplo de como popular uma tabela (você adapta)
-function populateExpensesTable(expenses) {
-    const tbody = document.getElementById('expensesTableBody');
-    tbody.innerHTML = '';
-    
-    expenses.forEach(expense => {
-        const row = `
-            <tr>
-                <td>${expense.description}</td>
-                <td>${formatCurrency(expense.value)}</td>
-                <td>${formatDate(expense.date)}</td>
-                <td>${expense.category || '-'}</td>
-                <td class="text-end table-actions">
-                    <button class="btn btn-sm btn-outline-primary" onclick="editExpense('${expense.id}')">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteExpense('${expense.id}')">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
 }

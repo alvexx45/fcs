@@ -1,5 +1,6 @@
 package com.bernardo.fcs.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,5 +77,14 @@ public class ExpenseService {
         }
         
         expenseRepository.delete(expense);
+    }
+
+    public BigDecimal sumExpenses(String userId) {
+        var user = userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return user.getExpenses().stream()
+                .map(Expense::getValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
