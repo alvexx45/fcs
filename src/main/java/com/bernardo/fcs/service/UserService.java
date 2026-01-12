@@ -36,7 +36,7 @@ public class UserService {
         return userSaved.getUserId();
     }
 
-    public ResponseEntity<Void> login(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<UserResponseDTO> login(@RequestBody UserLoginDTO userLoginDTO) {
         if (userLoginDTO.username() != null) {
             var username = userRepository.findByUsername(userLoginDTO.username());
             if (username.isPresent()) {
@@ -45,7 +45,11 @@ public class UserService {
                     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         
                     if (encoder.matches(userLoginDTO.password(), user.getPassword())) {
-                        return ResponseEntity.ok().build();
+                        var userResponse = new UserResponseDTO(
+                            user.getUserId().toString(), 
+                            user.getUsername()
+                        );
+                        return ResponseEntity.ok(userResponse);
                     }
                 }
             }

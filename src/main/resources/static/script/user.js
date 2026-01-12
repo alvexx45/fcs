@@ -58,11 +58,6 @@ async function handleLogin(event) {
             password: password
         };
         
-        // TODO: Implementar requisição POST para /login ou /users/login
-        console.log('TODO: Implementar login', loginData);
-        
-        // Exemplo de implementação:
-        /*
         const response = await fetch('http://localhost:8080/users/login', {
             method: 'POST',
             headers: {
@@ -74,13 +69,12 @@ async function handleLogin(event) {
         if (response.ok) {
             const user = await response.json();
             // Salvar token/userId no localStorage
-            localStorage.setItem('userId', user.id);
+            localStorage.setItem('userId', user.userId);
             // Redirecionar para dashboard
             window.location.href = '/dashboard.html';
         } else {
             alert('Usuário ou senha incorretos!');
         }
-        */
         
     } catch(error) {
         console.error('Erro:', error);
