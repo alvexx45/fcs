@@ -38,10 +38,67 @@ async function loadInvestments() {
     }
 }
 
-document.getElementById('investmentForm').addEventListener('submit', async function(e) {
+// Form submit
+document.getElementById('investmentForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    // TODO: Implementar POST/PUT para criar/editar investimento
-    console.log('TODO: Salvar investimento');
+
+    try {
+        const type = document.getElementById('investmentType').value;
+        const value = document.getElementById('investmentValue').value;
+        const date = document.getElementById('investmentDate').value;
+        const investmentId = document.getElementById('investmentId').value; // Pega o ID (vazio se for criação)
+
+        const investmentData = {
+            type: type,
+            value: value,
+            date: date
+        }
+
+        let response;
+        
+        // Se tem ID, é edição (PUT), se não tem, é criação (POST)
+        if (investmentId) {
+            response = await fetch(`http://localhost:8080/users/${userId}/investment/${investmentId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(investmentData)
+            });
+        } else {
+            response = await fetch(`http://localhost:8080/users/${userId}/investment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(investmentData)
+            });
+        }
+
+        if (response.ok) {
+            alert(investmentId ? 'Investmento atualizado com sucesso!' : 'Investmento criado com sucesso!');
+
+            // Fecha o modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('investmentModal'));
+            modal.hide();
+
+            // Limpa o formulário
+            document.getElementById('investmentForm').reset();
+
+            // Recarrega a lista de investimentos
+            loadInvestments();
+
+            // Atualiza os totais
+            loadOverviewData();
+        } else {
+            const error = await response.text();
+            alert('Erro ao salvar investimento: ' + error);
+        }
+
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor: ' + error.message);
+    }
 });
 
 async function deleteInvestment(investmentId) {
@@ -65,8 +122,48 @@ async function deleteInvestment(investmentId) {
     }
 }
 
-function editInvestment(investmentId) {
-    // TODO: Implementar edição
-    console.log('Editar investimento:', investmentId);
-    alert('Funcionalidade de edição será implementada em breve!');
+async function editInvestment(investmentId) {
+    try {
+        // Busca os dados da investimento
+        const response = await fetch(`http://localhost:8080/users/${userId}/investment`);
+        const investments = await response.json();
+        
+        // Encontra a investimento específica
+        const investment = investments.find(e => e.investmentId === investmentId);
+        
+        if (!investment) {
+            alert('Investimento não encontrada!');
+            return;
+        }
+        
+        // Preenche o formulário com os dados
+        document.getElementById('investmentId').value = investment.investmentId;
+        document.getElementById('investmentType').value = investment.type;
+        document.getElementById('investmentValue').value = investment.value;
+        document.getElementById('investmentDate').value = investment.date;
+        
+        // Muda o título do modal
+        document.getElementById('investmentModalLabel').textContent = 'Editar Investimento';
+        
+        // Abre o modal
+        const modal = new bootstrap.Modal(document.getElementById('investmentModal'));
+        modal.show();
+        
+    } catch (error) {
+        console.error('Erro ao carregar investimento:', error);
+        alert('Erro ao carregar dados da investimento');
+    }
 }
+
+// Limpa o formulário e reseta o título quando o modal é fechado
+document.getElementById('investmentModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('investmentForm').reset();
+    document.getElementById('investmentModalLabel').textContent = 'Novo Investimento';
+});
+
+// Limpa o formulário quando clicar em "Novo Investimento"
+document.getElementById('newInvestmentBtn').addEventListener('click', function () {
+    document.getElementById('investmentForm').reset();
+    document.getElementById('investmentId').value = ''; // Garante que está vazio
+    document.getElementById('investmentModalLabel').textContent = 'Novo Investimento';
+});
