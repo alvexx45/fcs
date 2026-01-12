@@ -28,8 +28,8 @@ async function createUser(event) {
         // 4. Verifica se deu certo
         if (response.ok) {
             alert('Usuário criado com sucesso!');
-            // Redireciona imediatamente
-            window.location.href = "/dashboard.html";
+            // Redireciona para a página de login
+            window.location.href = "/login.html";
         } else {
             // Se der erro, mostra a mensagem
             const error = await response.text();
