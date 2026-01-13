@@ -168,8 +168,8 @@
                                     <thead>
                                         <tr>
                                             <th>Tipo</th>
-                                            <th>Fonte</th>
                                             <th>Valor</th>
+                                            <th>Fonte</th>
                                             <th>Data</th>
                                             <th class="text-end">Ações</th>
                                         </tr>
@@ -304,14 +304,7 @@
                         <input type="hidden" id="investmentId">
                         <div class="mb-3">
                             <label for="investmentType" class="form-label">Tipo</label>
-                            <select class="form-select" id="investmentType" required>
-                                <option value="">Selecione...</option>
-                                <option value="Ações">Ações</option>
-                                <option value="Renda Fixa">Renda Fixa</option>
-                                <option value="Fundos">Fundos</option>
-                                <option value="Criptomoedas">Criptomoedas</option>
-                                <option value="Outros">Outros</option>
-                            </select>
+                            <input type="text" class="form-control" id="investmentType">
                         </div>
                         <div class="mb-3">
                             <label for="investmentValue" class="form-label">Valor</label>

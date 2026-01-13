@@ -19,8 +19,8 @@ async function loadIncome() {
             const row = `
                 <tr>
                     <td>${income.type}</td>
-                    <td>${income.source || '-'}</td>
                     <td class="text-success fw-bold">${formatCurrency(income.value)}</td>
+                    <td>${income.source || '-'}</td>
                     <td>${formatDate(income.data)}</td>
                     <td class="text-end table-actions">
                         <button class="btn btn-sm btn-outline-primary" onclick="editIncome('${income.incomeId}')">
