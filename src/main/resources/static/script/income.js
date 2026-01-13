@@ -127,7 +127,7 @@ async function deleteIncome(incomeId) {
     }
 }
 
-async function editincome(incomeId) {
+async function editIncome(incomeId) {
     try {
         // Busca os dados da receita
         const response = await fetch(`http://localhost:8080/users/${userId}/income`);
@@ -146,7 +146,7 @@ async function editincome(incomeId) {
         document.getElementById('incomeType').value = income.type;
         document.getElementById('incomeSource').value = income.source || '';
         document.getElementById('incomeValue').value = income.value;
-        document.getElementById('incomeDate').value = income.date;
+        document.getElementById('incomeDate').value = formatDateForInput(income.data);
         
         // Muda o título do modal
         document.getElementById('incomeModalLabel').textContent = 'Editar Receita';
@@ -168,7 +168,7 @@ document.getElementById('incomeModal').addEventListener('hidden.bs.modal', funct
 });
 
 // Limpa o formulário quando clicar em "Nova Receita"
-document.getElementById('newincomeBtn').addEventListener('click', function () {
+document.getElementById('newIncomeBtn').addEventListener('click', function () {
     document.getElementById('incomeForm').reset();
     document.getElementById('incomeId').value = ''; // Garante que está vazio
     document.getElementById('incomeModalLabel').textContent = 'Nova Receita';

@@ -116,7 +116,21 @@ function formatCurrency(value) {
 }
 
 function formatDate(dateString) {
-    return new Date(dateString).toLocaleDateString('pt-BR');
+    // Se for array [2026, 1, 12], converte para string
+    if (Array.isArray(dateString)) {
+        const [year, month, day] = dateString;
+        dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+    return new Date(dateString + 'T00:00:00').toLocaleDateString('pt-BR');
+}
+
+// Converte data do backend para formato do input type="date" (YYYY-MM-DD)
+function formatDateForInput(dateValue) {
+    if (Array.isArray(dateValue)) {
+        const [year, month, day] = dateValue;
+        return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+    return dateValue;
 }
 
 // Função para mostrar mensagens de notificação

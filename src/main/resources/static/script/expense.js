@@ -148,7 +148,7 @@ async function editExpense(expenseId) {
         document.getElementById('expenseType').value = expense.type;
         document.getElementById('expensePMethod').value = expense.p_method || '';
         document.getElementById('expenseValue').value = expense.value;
-        document.getElementById('expenseDate').value = expense.date;
+        document.getElementById('expenseDate').value = formatDateForInput(expense.date);
         
         // Muda o título do modal
         document.getElementById('expenseModalLabel').textContent = 'Editar Despesa';

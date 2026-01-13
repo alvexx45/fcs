@@ -144,7 +144,7 @@ async function editInvestment(investmentId) {
         document.getElementById('investmentId').value = investment.investmentId;
         document.getElementById('investmentType').value = investment.type;
         document.getElementById('investmentValue').value = investment.value;
-        document.getElementById('investmentDate').value = investment.date;
+        document.getElementById('investmentDate').value = formatDateForInput(investment.date);
         
         // Muda o título do modal
         document.getElementById('investmentModalLabel').textContent = 'Editar Investimento';
