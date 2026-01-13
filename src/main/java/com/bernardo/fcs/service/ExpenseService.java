@@ -40,11 +40,24 @@ public class ExpenseService {
     }
 
     public List<ExpenseResponseDTO> listExpenses(String userId) {
-        var user = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var userId_uuid = UUID.fromString(userId);
         
-        return user.getExpenses().stream().map(exp -> new ExpenseResponseDTO(exp.getExpenseId().toString(), exp.getType(),
-         exp.getValue(), exp.getP_method(), exp.getDate())).toList();   
+        // Verifica se usuário existe
+        if (!userRepository.existsById(userId_uuid)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        
+        // Busca despesas já ordenadas por data (mais recente primeiro)
+        return expenseRepository.findByUser_UserIdOrderByDateDesc(userId_uuid)
+            .stream()
+            .map(exp -> new ExpenseResponseDTO(
+                exp.getExpenseId().toString(), 
+                exp.getType(),
+                exp.getValue(), 
+                exp.getP_method(), 
+                exp.getDate()
+            ))
+            .toList();   
     }
 
     public void updateExpenseById(String userId, String expenseId, UpdateExpenseDTO updateExpenseDTO) {

@@ -41,11 +41,24 @@ public class IncomeService {
     }
 
     public List<IncomeResponseDTO> listIncomes(String userId) {
-        var user = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var userId_uuid = UUID.fromString(userId);
         
-        return user.getIncomes().stream().map(inc -> new IncomeResponseDTO(inc.getIncomeId().toString(), inc.getType(),
-         inc.getSource(), inc.getValue(), inc.getDate())).toList();
+        // Verifica se usuário existe
+        if (!userRepository.existsById(userId_uuid)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        
+        // Busca receitas já ordenadas por data (mais recente primeiro)
+        return incomeRepository.findByUser_UserIdOrderByDateDesc(userId_uuid)
+            .stream()
+            .map(inc -> new IncomeResponseDTO(
+                inc.getIncomeId().toString(), 
+                inc.getType(),
+                inc.getSource(), 
+                inc.getValue(), 
+                inc.getDate()
+            ))
+            .toList();
     }
 
     public void updateIncomeById(String userId, String incomeId, UpdateIncomeDTO updateIncomeDTO) {

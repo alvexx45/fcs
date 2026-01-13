@@ -39,11 +39,23 @@ public class InvestmentService {
     }
 
     public List<InvestmentResponseDTO> listInvestments(String userId) {
-        var user = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var userId_uuid = UUID.fromString(userId);
         
-        return user.getInvestments().stream().map(inv -> new InvestmentResponseDTO(inv.getInvestmentId().toString(), inv.getType(),
-         inv.getValue(), inv.getDate())).toList();
+        // Verifica se usuário existe
+        if (!userRepository.existsById(userId_uuid)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        
+        // Busca investimentos já ordenados por data (mais recente primeiro)
+        return investmentRepository.findByUser_UserIdOrderByDateDesc(userId_uuid)
+            .stream()
+            .map(inv -> new InvestmentResponseDTO(
+                inv.getInvestmentId().toString(), 
+                inv.getType(),
+                inv.getValue(), 
+                inv.getDate()
+            ))
+            .toList();
     }
 
     public void updateIncomeById(String userId, String investmentId, UpdateInvesmentDTO updateInvesmentDTO) {
