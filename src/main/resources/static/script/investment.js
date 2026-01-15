@@ -58,7 +58,7 @@ document.getElementById('investmentForm').addEventListener('submit', async funct
         
         // Se tem ID, é edição (PUT), se não tem, é criação (POST)
         if (investmentId) {
-            response = await fetch(`http://localhost:8080/users/${userId}/investment/${investmentId}`, {
+            response = await fetch(`/users/${userId}/investment/${investmentId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ document.getElementById('investmentForm').addEventListener('submit', async funct
                 body: JSON.stringify(investmentData)
             });
         } else {
-            response = await fetch(`http://localhost:8080/users/${userId}/investment`, {
+            response = await fetch(`/users/${userId}/investment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -109,7 +109,7 @@ async function deleteInvestment(investmentId) {
     if (!confirm('Deseja realmente excluir este investimento?')) return;
     
     try {
-        const response = await fetch(`http://localhost:8080/users/${userId}/investment/${investmentId}`, {
+        const response = await fetch(`/users/${userId}/investment/${investmentId}`, {
             method: 'DELETE'
         });
         

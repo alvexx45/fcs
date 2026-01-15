@@ -59,7 +59,7 @@ try {
         
         // Se tem ID, é edição (PUT), se não tem, é criação (POST)
         if (incomeId) {
-            response = await fetch(`http://localhost:8080/users/${userId}/income/${incomeId}`, {
+            response = await fetch(`/users/${userId}/income/${incomeId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ try {
                 body: JSON.stringify(incomeData)
             });
         } else {
-            response = await fetch(`http://localhost:8080/users/${userId}/income`, {
+            response = await fetch(`/users/${userId}/income`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ async function deleteIncome(incomeId) {
     if (!confirm('Deseja realmente excluir esta receita?')) return;
     
     try {
-        const response = await fetch(`http://localhost:8080/users/${userId}/income/${incomeId}`, {
+        const response = await fetch(`/users/${userId}/income/${incomeId}`, {
             method: 'DELETE'
         });
         

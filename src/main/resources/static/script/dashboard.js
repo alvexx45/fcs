@@ -80,9 +80,9 @@ async function loadOverviewData() {
     try {
         // Buscar totais de cada categoria
         const [expensesRes, incomeRes, investmentsRes] = await Promise.all([
-            fetch(`http://localhost:8080/users/${userId}/expense/total`),
-            fetch(`http://localhost:8080/users/${userId}/income/total`),
-            fetch(`http://localhost:8080/users/${userId}/investment/total`)
+            fetch(`/users/${userId}/expense/total`),
+            fetch(`/users/${userId}/income/total`),
+            fetch(`/users/${userId}/investment/total`)
         ]);
 
         const totalExpenses = await expensesRes.json();

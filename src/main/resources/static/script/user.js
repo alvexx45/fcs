@@ -15,7 +15,7 @@ async function createUser(event) {
         };
         
         // 3. Faz a requisição POST para o backend
-        const response = await fetch('http://localhost:8080/users', {
+        const response = await fetch('/users', {
             method: 'POST',                          // Tipo da requisição
             headers: {
                 'Content-Type': 'application/json'   // Informa que estamos enviando JSON

@@ -61,7 +61,7 @@ document.getElementById('expenseForm').addEventListener('submit', async function
         
         // Se tem ID, é edição (PUT), se não tem, é criação (POST)
         if (expenseId) {
-            response = await fetch(`http://localhost:8080/users/${userId}/expense/${expenseId}`, {
+            response = await fetch(`/users/${userId}/expense/${expenseId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ document.getElementById('expenseForm').addEventListener('submit', async function
                 body: JSON.stringify(expenseData)
             });
         } else {
-            response = await fetch(`http://localhost:8080/users/${userId}/expense`, {
+            response = await fetch(`/users/${userId}/expense`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ async function deleteExpense(expenseId) {
     if (!confirm('Deseja realmente excluir esta despesa?')) return;
 
     try {
-        const response = await fetch(`http://localhost:8080/users/${userId}/expense/${expenseId}`, {
+        const response = await fetch(`/users/${userId}/expense/${expenseId}`, {
             method: 'DELETE'
         });
 
