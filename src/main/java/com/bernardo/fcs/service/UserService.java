@@ -84,7 +84,8 @@ public class UserService {
             }
 
             if (updateUserDTO.password() != null) {
-                user.setPassword(updateUserDTO.password());
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                user.setPassword(encoder.encode(updateUserDTO.password()));
             }
 
             userRepository.save(user);
