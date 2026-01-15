@@ -26,14 +26,24 @@ public class UserService {
 
     // user
     public UUID createUser(CreateUserDTO createUserDTO) {
-        var entity = new User();
-        entity.setUsername(createUserDTO.username());
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        entity.setPassword(encoder.encode(createUserDTO.password()));
+        try {
+            var entity = new User();
 
-        var userSaved = userRepository.save(entity);
-        
-        return userSaved.getUserId();
+            var validate = userRepository.findByUsername(createUserDTO.username());
+            if (!validate.isPresent()) {
+                entity.setUsername(createUserDTO.username());
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                entity.setPassword(encoder.encode(createUserDTO.password()));
+
+                var userSaved = userRepository.save(entity);
+
+                return userSaved.getUserId();
+            } else {
+                throw new IllegalArgumentException("Usuário já existe");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating user", e);
+        }
     }
 
     public ResponseEntity<UserResponseDTO> login(@RequestBody UserLoginDTO userLoginDTO) {
