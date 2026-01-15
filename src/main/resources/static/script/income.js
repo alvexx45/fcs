@@ -4,7 +4,7 @@
 
 async function loadIncome() {
     try {
-        const response = await fetch(`http://localhost:8080/users/${userId}/income`);
+        const response = await fetch(`/users/${userId}/income`);
         const incomes = await response.json();
         
         const tbody = document.getElementById('incomeTableBody');
@@ -130,7 +130,7 @@ async function deleteIncome(incomeId) {
 async function editIncome(incomeId) {
     try {
         // Busca os dados da receita
-        const response = await fetch(`http://localhost:8080/users/${userId}/income`);
+        const response = await fetch(`/users/${userId}/income`);
         const incomes = await response.json();
         
         // Encontra a receita específica

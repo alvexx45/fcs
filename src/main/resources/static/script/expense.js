@@ -4,7 +4,7 @@
 
 async function loadExpenses() {
     try {
-        const response = await fetch(`http://localhost:8080/users/${userId}/expense`);
+        const response = await fetch(`/users/${userId}/expense`);
         const expenses = await response.json();
 
         const tbody = document.getElementById('expensesTableBody');
@@ -132,7 +132,7 @@ async function deleteExpense(expenseId) {
 async function editExpense(expenseId) {
     try {
         // Busca os dados da despesa
-        const response = await fetch(`http://localhost:8080/users/${userId}/expense`);
+        const response = await fetch(`/users/${userId}/expense`);
         const expenses = await response.json();
         
         // Encontra a despesa específica

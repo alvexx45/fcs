@@ -4,7 +4,7 @@
 
 async function loadInvestments() {
     try {
-        const response = await fetch(`http://localhost:8080/users/${userId}/investment`);
+        const response = await fetch(`/users/${userId}/investment`);
         const investments = await response.json();
         
         const tbody = document.getElementById('investmentsTableBody');
@@ -129,7 +129,7 @@ async function deleteInvestment(investmentId) {
 async function editInvestment(investmentId) {
     try {
         // Busca os dados da investimento
-        const response = await fetch(`http://localhost:8080/users/${userId}/investment`);
+        const response = await fetch(`/users/${userId}/investment`);
         const investments = await response.json();
         
         // Encontra a investimento específica
