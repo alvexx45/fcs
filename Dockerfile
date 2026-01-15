@@ -19,8 +19,8 @@ WORKDIR /app
 # Copy JAR from build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose port (Railway will inject PORT env var)
+# Expose port (Railway uses dynamic PORT)
 EXPOSE 8080
 
-# Run the application
-CMD ["java", "-Xmx512m", "-jar", "app.jar"]
+# Run the application with server.port from env
+CMD ["sh", "-c", "java -Xmx512m -Dserver.port=${PORT:-8080} -jar app.jar"]
