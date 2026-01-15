@@ -1,5 +1,5 @@
 # Multi-stage build for Spring Boot
-FROM maven:3.9-eclipse-temurin-25-ea AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests -B
 
 # Runtime stage
-FROM eclipse-temurin:25-ea-jre-jammy
+FROM eclipse-temurin:21-jre-jammy
 
 WORKDIR /app
 
