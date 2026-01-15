@@ -3,6 +3,26 @@
 // ========================================
 
 document.addEventListener('DOMContentLoaded', function() {
+    // ========================================
+    // MOBILE SIDEBAR TOGGLE
+    // ========================================
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+        
+        // Fecha sidebar ao clicar no overlay
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+    }
+    
     // Mostra data atual
     const currentDateElement = document.getElementById('currentDate');
     if (currentDateElement) {
@@ -34,7 +54,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const sectionId = this.dataset.section;
             document.getElementById(sectionId).classList.remove('d-none');
             
-            // Carrega dados da seção (você implementa)
+            // Fecha sidebar no mobile
+            if (window.innerWidth < 768 && sidebar) {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+            }
+            
+            // Carrega dados da seção
             loadSectionData(sectionId);
         });
     });
@@ -51,13 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadOverviewData();
 });
 
-
-// ========================================
-// FUNÇÕES PARA VOCÊ IMPLEMENTAR
-// ========================================
-
 function loadSectionData(section) {
-    // TODO: Implementar carregamento de dados por seção
     switch(section) {
         case 'overview':
             loadOverviewData();
