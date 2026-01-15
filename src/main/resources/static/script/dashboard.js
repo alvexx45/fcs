@@ -3,6 +3,37 @@
 // ========================================
 
 document.addEventListener('DOMContentLoaded', function() {
+    // ========================================
+    // MOBILE SIDEBAR TOGGLE
+    // ========================================
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+        
+        // Fecha sidebar ao clicar no overlay
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+        
+        // Fecha sidebar ao clicar em um link (mobile)
+        const navLinks = document.querySelectorAll('.sidebar .nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 768) {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                }
+            });
+        });
+    }
+    
     // Mostra data atual
     const currentDateElement = document.getElementById('currentDate');
     if (currentDateElement) {

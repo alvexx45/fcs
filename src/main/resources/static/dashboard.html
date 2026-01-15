@@ -20,13 +20,56 @@
         .stat-card.income { border-color: #28a745; }
         .stat-card.investments { border-color: #007bff; }
         .table-actions button { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+        
+        /* Mobile Menu */
+        .navbar-toggler { border-color: rgba(255,255,255,0.3); }
+        .navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); }
+        
+        @media (max-width: 767.98px) {
+            .sidebar { 
+                position: fixed; 
+                top: 0; 
+                left: -100%; 
+                z-index: 1045; 
+                width: 80%; 
+                max-width: 300px;
+                transition: left 0.3s ease-in-out;
+                height: 100vh;
+                overflow-y: auto;
+            }
+            .sidebar.show { left: 0; }
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 1040;
+                display: none;
+            }
+            .sidebar-overlay.show { display: block; }
+        }
     </style>
 </head>
 <body>
+    <!-- Mobile Menu Button -->
+    <nav class="navbar navbar-dark d-md-none" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+        <div class="container-fluid">
+            <span class="navbar-brand"><i class="bi bi-wallet2"></i> FCS</span>
+            <button class="navbar-toggler" type="button" id="sidebarToggle">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-3">
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar p-3" id="sidebar">
                 <div class="position-sticky">
                     <h4 class="text-white text-center mb-4"><i class="bi bi-wallet2"></i> FCS</h4>
                     <ul class="nav flex-column">
