@@ -10,6 +10,5 @@ import com.bernardo.fcs.model.Investment;
 
 @Repository
 public interface InvestmentRepository extends JpaRepository<Investment, UUID> {
-    // Busca investimentos do usuário ordenados por data (mais recente primeiro)
     List<Investment> findByUser_UserIdOrderByDateDesc(UUID userId);
 }
