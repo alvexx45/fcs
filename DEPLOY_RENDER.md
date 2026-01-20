@@ -44,39 +44,42 @@ git push -u origin main
    - **Region**: Mesma do banco de dados
    - **Branch**: `main`
    - **Root Directory**: (deixe vazio)
-   - **Environment**: **Java**
-   - **Build Command**: 
-     ```bash
-     mvn clean package -DskipTests
-     ```
-   - **Start Command**: 
-     ```bash
-     java -Xmx512m -Dserver.port=$PORT -jar target/*.jar
-     ```
+   - **Environment**: **Docker**
+   - O Render detectará automaticamente o `Dockerfile` na raiz do projeto
+   - **Build Command**: (deixe vazio - Docker usa o Dockerfile)
+   - **Start Command**: (deixe vazio - Docker usa o CMD do Dockerfile)
 
 ### 4. Configurar Variáveis de Ambiente
 
-Na seção **Environment Variables**, adicione:
+Na seção **Environment Variables** do seu Web Service, adicione:
 
-#### Opção A: Conectar automaticamente ao banco criado
-1. Clique em **"Add Environment Variable"**
-2. Selecione **"Add from Database"**
-3. Escolha o banco `fcs-db`
-4. O Render adicionará automaticamente `DATABASE_URL`
+**IMPORTANTE**: Você precisa copiar as informações do painel do banco de dados.
 
-#### Opção B: Adicionar manualmente
-Se precisar adicionar manualmente, vá até o banco de dados criado e copie:
+1. Abra o banco de dados `fcs-db` em outra aba
+2. Na seção **"Connections"**, clique no ícone de "olho" 👁️ para revelar os valores ocultos
+3. No seu Web Service, adicione estas 3 variáveis:
 
+**Variável 1:**
 ```
-DATABASE_URL = <Internal Database URL do Render>
-DB_USERNAME = fcs_user
-DB_PASSWORD = <senha gerada pelo Render>
+Key: JDBC_DATABASE_URL
+Value: copie "Internal Database URL" e adicione jdbc: no início
 ```
+Exemplo: Se aparecer `postgresql://fcs_user:senha@dpg-xxxxx-a/fcs`  
+Cole como: `jdbc:postgresql://fcs_user:senha@dpg-xxxxx-a/fcs`
 
-**Variáveis adicionais (opcional):**
+**Variável 2:**
 ```
-JAVA_OPTS = -Xmx512m
+Key: PGUSER
+Value: fcs_user
 ```
+(copie do campo "Username" do banco)
+
+**Variável 3:**
+```
+Key: PGPASSWORD
+Value: <copie do campo "Password" do banco>
+```
+(clique no 👁️ para revelar a senha)
 
 ### 5. Deploy
 
@@ -89,7 +92,7 @@ JAVA_OPTS = -Xmx512m
 
 Após o deploy bem-sucedido:
 - URL da aplicação: `https://fcs-app.onrender.com` (ou o nome que você escolheu)
-- Acesse `/health` para verificar se está funcionando
+- Acesse `/api/health` para verificar se está funcionando
 
 ## 🔧 Desenvolvimento Local
 
@@ -117,7 +120,7 @@ docker-compose up --build
 - Banco de dados expira após **90 dias** (mas pode ser renovado)
 
 ### Dicas:
-1. **Health Check**: O endpoint `/health` deve retornar status 200
+1. **Health Check**: O endpoint `/api/health` deve retornar status 200
 2. **Logs**: Acesse logs em tempo real no dashboard do Render
 3. **Auto-deploy**: Por padrão, cada push na branch `main` faz deploy automático
 4. **Domínio customizado**: Pode adicionar domínio próprio (planos pagos)
