@@ -26,9 +26,8 @@ public class Expense {
     private UUID expenseId;
     private String type;
     private BigDecimal value;
-    private String p_method;
     private LocalDate date;
-    
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -39,14 +38,14 @@ public class Expense {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    public Expense() {}
+    public Expense() {
+    }
 
-    public Expense(UUID expenseId, String type, BigDecimal value, String p_method, LocalDate date, User user,
+    public Expense(UUID expenseId, String type, BigDecimal value, LocalDate date, User user,
             Instant creationTimestamp, Instant updateTimestamp) {
         this.expenseId = expenseId;
         this.type = type;
         this.value = value;
-        this.p_method = p_method;
         this.date = date;
         this.user = user;
         this.creationTimestamp = creationTimestamp;
@@ -75,14 +74,6 @@ public class Expense {
 
     public void setValue(BigDecimal value) {
         this.value = value;
-    }
-
-    public String getP_method() {
-        return p_method;
-    }
-
-    public void setP_method(String p_method) {
-        this.p_method = p_method;
     }
 
     public LocalDate getDate() {

@@ -1,6 +1,6 @@
 services:
-  mysql:
-    image: mysql
+  mariadb:
+    image: mariadb
     ports:
       - "3306:3306"
     expose:
