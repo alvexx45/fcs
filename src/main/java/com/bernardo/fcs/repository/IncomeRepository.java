@@ -10,6 +10,6 @@ import com.bernardo.fcs.model.Income;
 
 @Repository
 public interface IncomeRepository extends JpaRepository<Income, UUID> {
-    // Busca receitas do usuário ordenadas por data (mais recente primeiro)
-    List<Income> findByUser_UserIdOrderByDateDesc(UUID userId);
+    // Busca receitas do usuário ordenadas por data e depois por data de criação (mais recente primeiro)
+    List<Income> findByUser_UserIdOrderByDateDescCreationTimestampDesc(UUID userId);
 }

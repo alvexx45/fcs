@@ -10,6 +10,6 @@ import com.bernardo.fcs.model.Expense;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
-    // Busca despesas do usuário ordenadas por data (mais recente primeiro)
-    List<Expense> findByUser_UserIdOrderByDateDesc(UUID userId);
+    // Busca despesas do usuário ordenadas por data e depois por data de criação (mais recente primeiro)
+    List<Expense> findByUser_UserIdOrderByDateDescCreationTimestampDesc(UUID userId);
 }

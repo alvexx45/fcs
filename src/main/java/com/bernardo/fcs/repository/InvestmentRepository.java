@@ -10,5 +10,5 @@ import com.bernardo.fcs.model.Investment;
 
 @Repository
 public interface InvestmentRepository extends JpaRepository<Investment, UUID> {
-    List<Investment> findByUser_UserIdOrderByDateDesc(UUID userId);
+    List<Investment> findByUser_UserIdOrderByDateDescCreationTimestampDesc(UUID userId);
 }

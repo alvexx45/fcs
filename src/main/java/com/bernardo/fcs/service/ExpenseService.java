@@ -46,8 +46,8 @@ public class ExpenseService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        // Busca despesas já ordenadas por data (mais recente primeiro)
-        return expenseRepository.findByUser_UserIdOrderByDateDesc(userId_uuid)
+        // Busca despesas já ordenadas por data e criação (mais recente primeiro)
+        return expenseRepository.findByUser_UserIdOrderByDateDescCreationTimestampDesc(userId_uuid)
                 .stream()
                 .map(exp -> new ExpenseResponseDTO(
                         exp.getExpenseId().toString(),
