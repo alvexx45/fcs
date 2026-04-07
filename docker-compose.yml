@@ -2,7 +2,7 @@ services:
   mariadb:
     image: mariadb
     ports:
-      - "3306:3306"
+      - "3307:3306"
     expose:
       - "3306"
     environment:
