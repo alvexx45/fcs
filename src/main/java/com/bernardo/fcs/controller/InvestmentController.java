@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardo.fcs.controller.dto.CreateInvestmentDTO;
 import com.bernardo.fcs.controller.dto.InvestmentResponseDTO;
-import com.bernardo.fcs.controller.dto.UpdateInvesmentDTO;
+import com.bernardo.fcs.controller.dto.UpdateInvestmentDTO;
 import com.bernardo.fcs.service.InvestmentService;
 
 @RestController
@@ -39,14 +39,14 @@ public class InvestmentController {
     }
 
     @PutMapping("/{investmentId}")
-    public ResponseEntity<Void> updateInvestmentById(@PathVariable("userId") String userId, @PathVariable("investmentId") String investmentId, @RequestBody UpdateInvesmentDTO updateInvestmentDTO) {
-        investmentService.updateIncomeById(userId, investmentId, updateInvestmentDTO);
+    public ResponseEntity<Void> updateInvestmentById(@PathVariable("userId") String userId, @PathVariable("investmentId") String investmentId, @RequestBody UpdateInvestmentDTO updateInvestmentDTO) {
+        investmentService.updateInvestmentById(userId, investmentId, updateInvestmentDTO);
 
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{investmentId}")
-    public ResponseEntity<Void> deleteExpenseById(@PathVariable("userId") String userId, @PathVariable("investmentId") String investmentId) {
+    public ResponseEntity<Void> deleteInvestmentById(@PathVariable("userId") String userId, @PathVariable("investmentId") String investmentId) {
         investmentService.deleteInvestmentById(userId, investmentId);
         
         return ResponseEntity.noContent().build();

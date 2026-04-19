@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.bernardo.fcs.controller.dto.CreateInvestmentDTO;
 import com.bernardo.fcs.controller.dto.InvestmentResponseDTO;
-import com.bernardo.fcs.controller.dto.UpdateInvesmentDTO;
+import com.bernardo.fcs.controller.dto.UpdateInvestmentDTO;
 import com.bernardo.fcs.model.Investment;
 import com.bernardo.fcs.repository.InvestmentRepository;
 import com.bernardo.fcs.repository.UserRepository;
@@ -58,22 +58,22 @@ public class InvestmentService {
             .toList();
     }
 
-    public void updateIncomeById(String userId, String investmentId, UpdateInvesmentDTO updateInvesmentDTO) {
+    public void updateInvestmentById(String userId, String investmentId, UpdateInvestmentDTO updateInvestmentDTO) {
         var investment = investmentRepository.findById(UUID.fromString(investmentId))
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        
+
         if (!investment.getUser().getUserId().equals(UUID.fromString(userId))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        if (updateInvesmentDTO.type() != null) {
-            investment.setType(updateInvesmentDTO.type());
+        if (updateInvestmentDTO.type() != null) {
+            investment.setType(updateInvestmentDTO.type());
         }
-        if (updateInvesmentDTO.value() != null) {
-            investment.setValue(updateInvesmentDTO.value());
+        if (updateInvestmentDTO.value() != null) {
+            investment.setValue(updateInvestmentDTO.value());
         }
-        if (updateInvesmentDTO.date() != null) {
-            investment.setDate(updateInvesmentDTO.date());
+        if (updateInvestmentDTO.date() != null) {
+            investment.setDate(updateInvestmentDTO.date());
         }
 
         investmentRepository.save(investment);

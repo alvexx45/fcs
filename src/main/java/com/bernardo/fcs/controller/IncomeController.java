@@ -46,7 +46,7 @@ public class IncomeController {
     }
 
     @DeleteMapping("/{incomeId}")
-    public ResponseEntity<Void> deleteExpenseById(@PathVariable("userId") String userId, @PathVariable("incomeId") String incomeId) {
+    public ResponseEntity<Void> deleteIncomeById(@PathVariable("userId") String userId, @PathVariable("incomeId") String incomeId) {
         incomeService.deleteIncomeById(userId, incomeId);
         
         return ResponseEntity.noContent().build();
