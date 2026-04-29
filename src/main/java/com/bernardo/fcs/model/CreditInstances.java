@@ -39,6 +39,8 @@ public class CreditInstances {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
+    public CreditInstances() {}
+
     public CreditInstances(UUID creditInstancesId, String type, BigDecimal value, LocalDate date, boolean isRecurrent, Credit credit, Instant creationTimestamp, Instant updateTimestamp) {
         setCreditInstancesId(creditInstancesId);
         setType(type);
