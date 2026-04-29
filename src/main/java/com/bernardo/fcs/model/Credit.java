@@ -23,7 +23,7 @@ public class Credit {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID creditId;
-    private LocalDate billingDay;
+    private int billingDay;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -37,7 +37,7 @@ public class Credit {
 
     public Credit() {}
 
-    public Credit(UUID creditId, LocalDate billingDay, User user, Instant creationTimestamp, Instant updateTimestamp) {
+    public Credit(UUID creditId, int billingDay, User user, Instant creationTimestamp, Instant updateTimestamp) {
         setCreditId(creditId);
         setBillingDay(billingDay);
         setUser(user);
@@ -53,11 +53,11 @@ public class Credit {
         this.creditId = creditId;
     }
 
-    public LocalDate getBillingDay() {
+    public int getBillingDay() {
         return billingDay;
     }
 
-    public void setBillingDay(LocalDate billingDay) {
+    public void setBillingDay(int billingDay) {
         this.billingDay = billingDay;
     }
 

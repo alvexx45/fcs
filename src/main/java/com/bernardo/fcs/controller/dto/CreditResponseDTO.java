@@ -1,7 +1,5 @@
 package com.bernardo.fcs.controller.dto;
 
-import java.time.LocalDate;
-
-public record CreditResponseDTO(String creditId, LocalDate billingDay) {
+public record CreditResponseDTO(String creditId, Integer billingDay) {
 
 }
