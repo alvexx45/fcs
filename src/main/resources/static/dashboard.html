@@ -5,114 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FCS - Dashboard</title>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .sidebar {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            transition: all 0.3s;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: #fff;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-        }
-
-        .card {
-            border: none;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card {
-            border-left: 4px solid;
-        }
-
-        .stat-card.expenses {
-            border-color: #dc3545;
-        }
-
-        .stat-card.income {
-            border-color: #28a745;
-        }
-
-        .stat-card.investments {
-            border-color: #007bff;
-        }
-
-        .table-actions button {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-        }
-
-        /* Mobile Menu */
-        .navbar-toggler {
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-        }
-
-        @media (max-width: 767.98px) {
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: -100%;
-                z-index: 1045;
-                width: 80%;
-                max-width: 300px;
-                transition: left 0.3s ease-in-out;
-                height: 100vh;
-                overflow-y: auto;
-            }
-
-            .sidebar.show {
-                left: 0;
-            }
-
-            .sidebar-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 1040;
-                display: none;
-            }
-
-            .sidebar-overlay.show {
-                display: block;
-            }
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <!-- Mobile Menu Button -->
-    <nav class="navbar navbar-dark d-md-none" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+    <nav class="navbar navbar-dark d-md-none p-3" style="background-color: var(--dark);">
         <div class="container-fluid">
-            <span class="navbar-brand"><i class="bi bi-wallet2"></i> FCS</span>
-            <button class="navbar-toggler" type="button" id="sidebarToggle">
-                <span class="navbar-toggler-icon"></span>
+            <span class="navbar-brand fw-bold"><i class="bi bi-wallet2 text-primary"></i> FCS</span>
+            <button class="navbar-toggler border-0" type="button" id="sidebarToggle">
+                <i class="bi bi-list fs-2"></i>
             </button>
         </div>
     </nav>
@@ -123,31 +34,35 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar p-3" id="sidebar">
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar" id="sidebar">
                 <div class="position-sticky">
-                    <h4 class="text-white text-center mb-4"><i class="bi bi-wallet2"></i> FCS</h4>
+                    <div class="d-none d-md-block mb-5 text-center">
+                        <h4 class="fw-bold"><i class="bi bi-wallet2 text-primary"></i> FCS</h4>
+                    </div>
+                    
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-2">
+                        <li class="nav-item">
                             <a class="nav-link active" href="#" data-section="overview">
-                                <i class="bi bi-speedometer2"></i> Visão Geral
+                                <i class="bi bi-grid-1x2"></i> Visão Geral
                             </a>
                         </li>
-                        <li class="nav-item mb-2">
+                        <li class="nav-item">
                             <a class="nav-link" href="#" data-section="expenses">
-                                <i class="bi bi-cart-dash"></i> Despesas
+                                <i class="bi bi-arrow-down-circle text-danger"></i> Despesas
                             </a>
                         </li>
-                        <li class="nav-item mb-2">
+                        <li class="nav-item">
                             <a class="nav-link" href="#" data-section="income">
-                                <i class="bi bi-cash-coin"></i> Receitas
+                                <i class="bi bi-arrow-up-circle text-success"></i> Receitas
                             </a>
                         </li>
-                        <li class="nav-item mb-2">
+                        <li class="nav-item">
                             <a class="nav-link" href="#" data-section="investments">
-                                <i class="bi bi-graph-up-arrow"></i> Investimentos
+                                <i class="bi bi-graph-up text-info"></i> Investimentos
                             </a>
                         </li>
-                        <li class="nav-item mt-5">
+                        
+                        <li class="nav-item mt-5 pt-5 border-top">
                             <a class="nav-link text-danger" href="#" id="logoutBtn">
                                 <i class="bi bi-box-arrow-right"></i> Sair
                             </a>
@@ -161,48 +76,57 @@
 
                 <!-- Overview Section -->
                 <section id="overview" class="content-section">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2>Visão Geral</h2>
-                        <span id="currentDate" class="text-muted"></span>
+                    <div class="d-flex justify-content-between align-items-end mb-5">
+                        <div>
+                            <h1 class="h2 mb-1">Painel de Controle</h1>
+                            <p class="text-secondary mb-0">Bem-vindo ao seu resumo financeiro.</p>
+                        </div>
+                        <span id="currentDate" class="badge bg-white text-secondary border p-2 fw-medium"></span>
                     </div>
 
                     <!-- Stats Cards -->
                     <div class="row mb-4">
                         <div class="col-md-4 mb-3">
                             <div class="card stat-card expenses">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-start">
                                         <div>
-                                            <p class="text-muted mb-1">Total Despesas</p>
-                                            <h3 class="mb-0" id="totalExpenses">R$ 0,00</h3>
+                                            <p class="text-secondary small fw-bold text-uppercase mb-1">Total Despesas</p>
+                                            <div class="stat-value text-danger" id="totalExpenses">R$ 0,00</div>
                                         </div>
-                                        <i class="bi bi-cart-dash text-danger" style="font-size: 2rem;"></i>
+                                        <div class="p-2 bg-danger bg-opacity-10 rounded-3">
+                                            <i class="bi bi-cart-dash text-danger fs-4"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="card stat-card income">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-start">
                                         <div>
-                                            <p class="text-muted mb-1">Total Receitas</p>
-                                            <h3 class="mb-0 text-success" id="totalIncome">R$ 0,00</h3>
+                                            <p class="text-secondary small fw-bold text-uppercase mb-1">Total Receitas</p>
+                                            <div class="stat-value text-success" id="totalIncome">R$ 0,00</div>
                                         </div>
-                                        <i class="bi bi-cash-coin text-success" style="font-size: 2rem;"></i>
+                                        <div class="p-2 bg-success bg-opacity-10 rounded-3">
+                                            <i class="bi bi-cash-coin text-success fs-4"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="card stat-card investments">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-start">
                                         <div>
-                                            <p class="text-muted mb-1">Total Investimentos</p>
-                                            <h3 class="mb-0 text-primary" id="totalInvestments">R$ 0,00</h3>
+                                            <p class="text-secondary small fw-bold text-uppercase mb-1">Total Investimentos</p>
+                                            <div class="stat-value text-info" id="totalInvestments">R$ 0,00</div>
                                         </div>
-                                        <i class="bi bi-graph-up-arrow text-primary" style="font-size: 2rem;"></i>
+                                        <div class="p-2 bg-info bg-opacity-10 rounded-3">
+                                            <i class="bi bi-graph-up-arrow text-info fs-4"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -210,34 +134,38 @@
                     </div>
 
                     <!-- Balance Card -->
-                    <div class="card mb-4">
-                        <div class="card-body text-center">
-                            <p class="text-muted mb-1">Saldo Total</p>
-                            <h2 id="totalBalance" class="mb-0">R$ 0,00</h2>
+                    <div class="card bg-primary text-white border-0 shadow-lg overflow-hidden position-relative">
+                        <div class="card-body p-5 text-center position-relative z-1">
+                            <p class="opacity-75 small fw-bold text-uppercase mb-2">Saldo Disponível</p>
+                            <h2 id="totalBalance" class="display-4 fw-bold mb-0">R$ 0,00</h2>
                         </div>
+                        <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background: radial-gradient(circle at 20% 30%, white 0%, transparent 70%);"></div>
                     </div>
                 </section>
 
                 <!-- Expenses Section -->
                 <section id="expenses" class="content-section d-none">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2><i class="bi bi-cart-dash text-danger"></i> Despesas</h2>
-                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#expenseModal"
+                        <div>
+                            <h2 class="mb-1">Minhas Despesas</h2>
+                            <p class="text-secondary small mb-0">Gerencie seus gastos mensais.</p>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#expenseModal"
                             id="newExpenseBtn">
-                            <i class="bi bi-plus-circle"></i> Nova Despesa
+                            <i class="bi bi-plus-lg me-2"></i> Nova Despesa
                         </button>
                     </div>
 
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover align-middle">
                                     <thead>
                                         <tr>
-                                            <th>Tipo</th>
+                                            <th>Descrição / Tipo</th>
                                             <th>Valor</th>
                                             <th>Data</th>
-                                            <th class="text-end">Ações</th>
+                                            <th class="text-end px-4">Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody id="expensesTableBody">
@@ -252,24 +180,27 @@
                 <!-- Income Section -->
                 <section id="income" class="content-section d-none">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2><i class="bi bi-cash-coin text-success"></i> Receitas</h2>
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#incomeModal"
-                            id="newIncomeBtn">
-                            <i class="bi bi-plus-circle"></i> Nova Receita
+                        <div>
+                            <h2 class="mb-1">Minhas Receitas</h2>
+                            <p class="text-secondary small mb-0">Acompanhe suas fontes de renda.</p>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#incomeModal"
+                            id="newIncomeBtn" style="background-color: var(--success); border-color: var(--success);">
+                            <i class="bi bi-plus-lg me-2"></i> Nova Receita
                         </button>
                     </div>
 
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover align-middle">
                                     <thead>
                                         <tr>
                                             <th>Tipo</th>
                                             <th>Valor</th>
                                             <th>Fonte</th>
                                             <th>Data</th>
-                                            <th class="text-end">Ações</th>
+                                            <th class="text-end px-4">Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody id="incomeTableBody">
@@ -284,23 +215,26 @@
                 <!-- Investments Section -->
                 <section id="investments" class="content-section d-none">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2><i class="bi bi-graph-up-arrow text-primary"></i> Investimentos</h2>
+                        <div>
+                            <h2 class="mb-1">Meus Investimentos</h2>
+                            <p class="text-secondary small mb-0">Monitore o crescimento do seu patrimônio.</p>
+                        </div>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#investmentModal"
-                            id="newInvestmentBtn">
-                            <i class="bi bi-plus-circle"></i> Novo Investimento
+                            id="newInvestmentBtn" style="background-color: var(--info); border-color: var(--info);">
+                            <i class="bi bi-plus-lg me-2"></i> Novo Investimento
                         </button>
                     </div>
 
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover align-middle">
                                     <thead>
                                         <tr>
-                                            <th>Tipo</th>
+                                            <th>Tipo de Ativo</th>
                                             <th>Valor</th>
                                             <th>Data</th>
-                                            <th class="text-end">Ações</th>
+                                            <th class="text-end px-4">Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody id="investmentsTableBody">
@@ -316,33 +250,34 @@
         </div>
     </div>
 
+    <!-- Modals are kept similar but with updated styling from style.css -->
     <!-- Expense Modal -->
     <div class="modal fade" id="expenseModal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="expenseModalLabel">Nova Despesa</h5>
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="expenseModalLabel">Nova Despesa</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form id="expenseForm">
-                    <div class="modal-body">
+                    <div class="modal-body py-4">
                         <input type="hidden" id="expenseId">
                         <div class="mb-3">
-                            <label for="expenseType" class="form-label">Tipo</label>
-                            <input type="text" class="form-control" id="expenseType" required>
+                            <label for="expenseType" class="form-label fw-medium">Tipo / Descrição</label>
+                            <input type="text" class="form-control" id="expenseType" placeholder="Ex: Aluguel, Supermercado" required>
                         </div>
                         <div class="mb-3">
-                            <label for="expenseValue" class="form-label">Valor</label>
-                            <input type="number" step="0.01" class="form-control" id="expenseValue" required>
+                            <label for="expenseValue" class="form-label fw-medium">Valor (R$)</label>
+                            <input type="number" step="0.01" class="form-control" id="expenseValue" placeholder="0,00" required>
                         </div>
                         <div class="mb-3">
-                            <label for="expenseDate" class="form-label">Data</label>
+                            <label for="expenseDate" class="form-label fw-medium">Data</label>
                             <input type="date" class="form-control" id="expenseDate" required>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Salvar</button>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger px-4">Salvar Despesa</button>
                     </div>
                 </form>
             </div>
@@ -351,35 +286,35 @@
 
     <!-- Income Modal -->
     <div class="modal fade" id="incomeModal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="incomeModalLabel">Nova Receita</h5>
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="incomeModalLabel">Nova Receita</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form id="incomeForm">
-                    <div class="modal-body">
+                    <div class="modal-body py-4">
                         <input type="hidden" id="incomeId">
                         <div class="mb-3">
-                            <label for="incomeType" class="form-label">Tipo</label>
-                            <input type="text" class="form-control" id="incomeType">
+                            <label for="incomeType" class="form-label fw-medium">Tipo</label>
+                            <input type="text" class="form-control" id="incomeType" placeholder="Ex: Salário, Freelance">
                         </div>
                         <div class="mb-3">
-                            <label for="incomeSource" class="form-label">Fonte</label>
-                            <input type="text" class="form-control" id="incomeSource">
+                            <label for="incomeSource" class="form-label fw-medium">Fonte</label>
+                            <input type="text" class="form-control" id="incomeSource" placeholder="Ex: Empresa X">
                         </div>
                         <div class="mb-3">
-                            <label for="incomeValue" class="form-label">Valor</label>
-                            <input type="number" step="0.01" class="form-control" id="incomeValue" required>
+                            <label for="incomeValue" class="form-label fw-medium">Valor (R$)</label>
+                            <input type="number" step="0.01" class="form-control" id="incomeValue" placeholder="0,00" required>
                         </div>
                         <div class="mb-3">
-                            <label for="incomeDate" class="form-label">Data</label>
+                            <label for="incomeDate" class="form-label fw-medium">Data</label>
                             <input type="date" class="form-control" id="incomeDate" required>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Salvar</button>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success px-4">Salvar Receita</button>
                     </div>
                 </form>
             </div>
@@ -388,33 +323,52 @@
 
     <!-- Investment Modal -->
     <div class="modal fade" id="investmentModal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="investmentModalLabel">Novo Investimento</h5>
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="investmentModalLabel">Novo Investimento</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form id="investmentForm">
-                    <div class="modal-body">
+                    <div class="modal-body py-4">
                         <input type="hidden" id="investmentId">
                         <div class="mb-3">
-                            <label for="investmentType" class="form-label">Tipo</label>
-                            <input type="text" class="form-control" id="investmentType">
+                            <label for="investmentType" class="form-label fw-medium">Tipo de Ativo</label>
+                            <input type="text" class="form-control" id="investmentType" placeholder="Ex: Tesouro Direto, Ações">
                         </div>
                         <div class="mb-3">
-                            <label for="investmentValue" class="form-label">Valor</label>
-                            <input type="number" step="0.01" class="form-control" id="investmentValue" required>
+                            <label for="investmentValue" class="form-label fw-medium">Valor Aplicado (R$)</label>
+                            <input type="number" step="0.01" class="form-control" id="investmentValue" placeholder="0,00" required>
                         </div>
                         <div class="mb-3">
-                            <label for="investmentDate" class="form-label">Data</label>
+                            <label for="investmentDate" class="form-label fw-medium">Data</label>
                             <input type="date" class="form-control" id="investmentDate" required>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-info text-white px-4">Salvar Investimento</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3">
+                        <i id="confirmIcon" class="bi bi-exclamation-circle text-warning display-4"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2" id="confirmTitle">Tem certeza?</h5>
+                    <p class="text-secondary small mb-4" id="confirmMessage">Esta ação não poderá ser desfeita.</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger px-4" id="confirmBtn">Confirmar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

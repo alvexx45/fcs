@@ -4,172 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FCS - Login</title>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
-            --accent-color: #3498db;
-        }
-        
-        body {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .login-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-            overflow: hidden;
-            max-width: 900px;
-            width: 100%;
-        }
-        
-        .login-left {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #5dade2 100%);
-            color: white;
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .login-left i {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .login-right {
-            padding: 3rem;
-        }
-        
-        .form-control {
-            border-radius: 10px;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            transition: all 0.3s;
-        }
-        
-        .form-control:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
-        }
-        
-        .btn-login {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #5dade2 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-            width: 100%;
-        }
-        
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-        
-        .divider {
-            text-align: center;
-            margin: 1.5rem 0;
-            position: relative;
-        }
-        
-        .divider::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 100%;
-            height: 1px;
-            background-color: #e0e0e0;
-        }
-        
-        .divider span {
-            background-color: white;
-            padding: 0 1rem;
-            position: relative;
-            color: #999;
-        }
-        
-        .input-group-text {
-            border-radius: 10px 0 0 10px;
-            border: 2px solid #e0e0e0;
-            border-right: none;
-            background-color: #f8f9fa;
-        }
-        
-        .input-group .form-control {
-            border-radius: 0 10px 10px 0;
-            border-left: none;
-        }
-        
-        .input-group:focus-within .input-group-text {
-            border-color: var(--accent-color);
-        }
-        
-        .back-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s;
-        }
-        
-        .back-link:hover {
-            color: var(--accent-color);
-            transform: translateX(-5px);
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="auth-body">
     <div class="container">
-        <div class="login-container">
+        <div class="auth-container">
             <div class="row g-0">
                 <!-- Left Side -->
                 <div class="col-lg-5 d-none d-lg-block">
-                    <div class="login-left h-100">
+                    <div class="auth-left h-100">
                         <div>
-                            <i class="bi bi-wallet2"></i>
-                            <h2 class="mb-3">Bem-vindo de volta!</h2>
-                            <p class="mb-0">Entre para acessar seu controle financeiro pessoal</p>
+                            <i class="bi bi-wallet2 mb-4" style="font-size: 5rem;"></i>
+                            <h2 class="mb-3 text-white">Bem-vindo de volta!</h2>
+                            <p class="mb-0 opacity-75">Entre para acessar seu controle financeiro pessoal e gerenciar seu patrimônio.</p>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Right Side -->
                 <div class="col-lg-7">
-                    <div class="login-right">
-                        <a href="/" class="back-link">
+                    <div class="auth-right">
+                        <a href="/" class="btn btn-link text-decoration-none p-0 mb-4 text-secondary">
                             <i class="bi bi-arrow-left"></i> Voltar para home
                         </a>
                         
                         <h2 class="mb-1">Login</h2>
-                        <p class="text-muted mb-4">Acesse sua conta FCS</p>
+                        <p class="text-secondary mb-4">Acesse sua conta FCS</p>
                         
                         <form id="loginForm" onsubmit="handleLogin(event)">
                             <div class="mb-3">
-                                <label for="username" class="form-label">Usuário</label>
+                                <label for="username" class="form-label fw-medium">Usuário</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="bi bi-person"></i>
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="bi bi-person text-secondary"></i>
                                     </span>
                                     <input 
                                         type="text" 
-                                        class="form-control" 
+                                        class="form-control border-start-0 ps-0" 
                                         id="username" 
                                         name="username"
                                         placeholder="Digite seu usuário" 
@@ -179,14 +59,14 @@
                             </div>
                             
                             <div class="mb-4">
-                                <label for="password" class="form-label">Senha</label>
+                                <label for="password" class="form-label fw-medium">Senha</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="bi bi-lock"></i>
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="bi bi-lock text-secondary"></i>
                                     </span>
                                     <input 
                                         type="password" 
-                                        class="form-control" 
+                                        class="form-control border-start-0 ps-0" 
                                         id="password" 
                                         name="password"
                                         placeholder="Digite sua senha" 
@@ -195,18 +75,19 @@
                                 </div>
                             </div>
                             
-                            <button type="submit" class="btn btn-primary btn-login">
+                            <button type="submit" class="btn btn-primary w-100 mb-4">
                                 <i class="bi bi-box-arrow-in-right"></i> Entrar
                             </button>
                             
-                            <div class="divider">
-                                <span>ou</span>
+                            <div class="position-relative mb-4">
+                                <hr class="text-secondary opacity-25">
+                                <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-secondary small">ou</span>
                             </div>
                             
                             <div class="text-center">
-                                <p class="text-muted mb-0">
+                                <p class="text-secondary mb-0">
                                     Não tem uma conta? 
-                                    <a href="create-user.html" class="text-decoration-none fw-semibold">Cadastre-se</a>
+                                    <a href="create-user.html" class="text-primary text-decoration-none fw-semibold">Cadastre-se</a>
                                 </p>
                             </div>
                         </form>
