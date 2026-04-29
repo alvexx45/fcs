@@ -43,14 +43,14 @@ public class Income {
 
     public Income(UUID incomeId, String type, String source, BigDecimal value, LocalDate date, User user,
             Instant creationTimestamp, Instant updateTimestamp) {
-        this.incomeId = incomeId;
-        this.type = type;
-        this.source = source;
-        this.value = value;
-        this.date = date;
-        this.user = user;
-        this.creationTimestamp = creationTimestamp;
-        this.updateTimestamp = updateTimestamp;
+        setIncomeId(incomeId);
+        setType(type);
+        setSource(source);
+        setValue(value);
+        setDate(date);
+        setUser(user);
+        setCreationTimestamp(creationTimestamp);
+        setUpdateTimestamp(updateTimestamp);
     }
 
     public UUID getIncomeId() {

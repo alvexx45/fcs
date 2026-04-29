@@ -43,13 +43,13 @@ public class Expense {
 
     public Expense(UUID expenseId, String type, BigDecimal value, LocalDate date, User user,
             Instant creationTimestamp, Instant updateTimestamp) {
-        this.expenseId = expenseId;
-        this.type = type;
-        this.value = value;
-        this.date = date;
-        this.user = user;
-        this.creationTimestamp = creationTimestamp;
-        this.updateTimestamp = updateTimestamp;
+        setExpenseId(expenseId);
+        setType(type);
+        setValue(value);
+        setDate(date);
+        setUser(user);
+        setCreationTimestamp(creationTimestamp);
+        setUpdateTimestamp(updateTimestamp);
     }
 
     public UUID getExpenseId() {

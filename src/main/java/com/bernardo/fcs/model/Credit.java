@@ -1,6 +1,5 @@
 package com.bernardo.fcs.model;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -19,15 +18,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "investments")
-public class Investment {
+@Table(name = "credit")
+public class Credit {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID investmentId;
-    private String type;
-    private BigDecimal value;
-    private LocalDate date;
-    
+    private UUID creditId;
+    private LocalDate billingDay;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -38,49 +35,30 @@ public class Investment {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    public Investment() {}
+    public Credit() {}
 
-    public Investment(UUID investmentId, String type, BigDecimal value, LocalDate date, User user,
-            Instant creationTimestamp, Instant updateTimestamp) {
-        setInvestmentId(investmentId);
-        setType(type);
-        setValue(value);
-        setDate(date);
+    public Credit(UUID creditId, LocalDate billingDay, User user, Instant creationTimestamp, Instant updateTimestamp) {
+        setCreditId(creditId);
+        setBillingDay(billingDay);
         setUser(user);
         setCreationTimestamp(creationTimestamp);
         setUpdateTimestamp(updateTimestamp);
     }
 
-    public UUID getInvestmentId() {
-        return investmentId;
+    public UUID getCreditId() {
+        return creditId;
     }
 
-    public void setInvestmentId(UUID investmentId) {
-        this.investmentId = investmentId;
+    public void setCreditId(UUID creditId) {
+        this.creditId = creditId;
     }
 
-    public String getType() {
-        return type;
+    public LocalDate getBillingDay() {
+        return billingDay;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public BigDecimal getValue() {
-        return value;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setBillingDay(LocalDate billingDay) {
+        this.billingDay = billingDay;
     }
 
     public User getUser() {
@@ -105,5 +83,5 @@ public class Investment {
 
     public void setUpdateTimestamp(Instant updateTimestamp) {
         this.updateTimestamp = updateTimestamp;
-    }
+    }  
 }
