@@ -66,9 +66,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Logout
-    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+    document.getElementById('logoutBtn').addEventListener('click', async function(e) {
         e.preventDefault();
-        if (confirm('Deseja realmente sair?')) {
+        const confirmed = await showConfirm({
+            title: 'Sair da conta',
+            message: 'Deseja realmente encerrar sua sessão?',
+            icon: 'bi-box-arrow-right',
+            color: 'primary',
+            buttonText: 'Sair'
+        });
+        
+        if (confirmed) {
             window.location.href = '/';
         }
     });
@@ -76,6 +84,46 @@ document.addEventListener('DOMContentLoaded', function() {
     // Carrega dados iniciais
     loadOverviewData();
 });
+
+// Função para mostrar modal de confirmação customizado
+function showConfirm({ title, message, icon, color, buttonText }) {
+    return new Promise((resolve) => {
+        const modalElement = document.getElementById('confirmModal');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const iconElement = document.getElementById('confirmIcon');
+        const titleElement = document.getElementById('confirmTitle');
+        const messageElement = document.getElementById('confirmMessage');
+        
+        // Configura conteúdo
+        titleElement.textContent = title || 'Tem certeza?';
+        messageElement.textContent = message || 'Esta ação não poderá ser desfeita.';
+        confirmBtn.textContent = buttonText || 'Confirmar';
+        
+        // Configura ícone e cor
+        iconElement.className = `bi ${icon || 'bi-exclamation-circle'} display-4 text-${color || 'warning'}`;
+        confirmBtn.className = `btn btn-${color === 'primary' ? 'primary' : 'danger'} px-4`;
+        
+        const modal = new bootstrap.Modal(modalElement);
+        
+        // Handler para o botão de confirmar
+        const handleConfirm = () => {
+            modal.hide();
+            resolve(true);
+            confirmBtn.removeEventListener('click', handleConfirm);
+        };
+        
+        confirmBtn.addEventListener('click', handleConfirm);
+        
+        // Handler para quando o modal fecha (seja por cancelar ou clicar fora)
+        modalElement.addEventListener('hidden.bs.modal', function onHidden() {
+            resolve(false);
+            confirmBtn.removeEventListener('click', handleConfirm);
+            modalElement.removeEventListener('hidden.bs.modal', onHidden);
+        }, { once: true });
+        
+        modal.show();
+    });
+}
 
 function loadSectionData(section) {
     switch(section) {

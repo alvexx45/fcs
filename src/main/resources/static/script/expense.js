@@ -106,7 +106,15 @@ document.getElementById('expenseForm').addEventListener('submit', async function
 });
 
 async function deleteExpense(expenseId) {
-    if (!confirm('Deseja realmente excluir esta despesa?')) return;
+    const confirmed = await showConfirm({
+        title: 'Excluir Despesa',
+        message: 'Deseja realmente excluir esta despesa? Esta ação não pode ser desfeita.',
+        icon: 'bi-trash',
+        color: 'danger',
+        buttonText: 'Excluir'
+    });
+
+    if (!confirmed) return;
 
     try {
         const response = await fetch(`http://localhost:8080/users/${userId}/expense/${expenseId}`, {

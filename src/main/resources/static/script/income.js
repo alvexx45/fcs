@@ -107,7 +107,15 @@ try {
 });
 
 async function deleteIncome(incomeId) {
-    if (!confirm('Deseja realmente excluir esta receita?')) return;
+    const confirmed = await showConfirm({
+        title: 'Excluir Receita',
+        message: 'Deseja realmente excluir esta receita? Esta ação não pode ser desfeita.',
+        icon: 'bi-trash',
+        color: 'danger',
+        buttonText: 'Excluir'
+    });
+
+    if (!confirmed) return;
     
     try {
         const response = await fetch(`http://localhost:8080/users/${userId}/income/${incomeId}`, {
