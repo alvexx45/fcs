@@ -46,8 +46,8 @@ public class InvestmentService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         
-        // Busca investimentos já ordenados por data (mais recente primeiro)
-        return investmentRepository.findByUser_UserIdOrderByDateDesc(userId_uuid)
+        // Busca investimentos já ordenados por data e criação (mais recente primeiro)
+        return investmentRepository.findByUser_UserIdOrderByDateDescCreationTimestampDesc(userId_uuid)
             .stream()
             .map(inv -> new InvestmentResponseDTO(
                 inv.getInvestmentId().toString(), 

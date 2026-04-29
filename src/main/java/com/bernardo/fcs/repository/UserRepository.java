@@ -9,6 +9,5 @@ import com.bernardo.fcs.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-    // @Query("SELECT u.username FROM users WHERE u.username = ?");
     Optional<User> findByUsername(String username);
 }

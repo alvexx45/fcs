@@ -19,44 +19,45 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "investments")
-public class Investment {
+@Table(name = "credit_instances")
+public class CreditInstances {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID investmentId;
+    private UUID creditInstancesId;
     private String type;
     private BigDecimal value;
     private LocalDate date;
-    
+    private boolean isRecurrent;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "credit_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private Credit credit;
 
     @CreationTimestamp
     private Instant creationTimestamp;
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    public Investment() {}
+    public CreditInstances() {}
 
-    public Investment(UUID investmentId, String type, BigDecimal value, LocalDate date, User user,
-            Instant creationTimestamp, Instant updateTimestamp) {
-        setInvestmentId(investmentId);
+    public CreditInstances(UUID creditInstancesId, String type, BigDecimal value, LocalDate date, boolean isRecurrent, Credit credit, Instant creationTimestamp, Instant updateTimestamp) {
+        setCreditInstancesId(creditInstancesId);
         setType(type);
         setValue(value);
         setDate(date);
-        setUser(user);
+        setRecurrent(isRecurrent);
+        setCredit(credit);
         setCreationTimestamp(creationTimestamp);
         setUpdateTimestamp(updateTimestamp);
     }
 
-    public UUID getInvestmentId() {
-        return investmentId;
+    public UUID getCreditInstancesId() {
+        return creditInstancesId;
     }
 
-    public void setInvestmentId(UUID investmentId) {
-        this.investmentId = investmentId;
+    public void setCreditInstancesId(UUID creditInstancesId) {
+        this.creditInstancesId = creditInstancesId;
     }
 
     public String getType() {
@@ -83,12 +84,20 @@ public class Investment {
         this.date = date;
     }
 
-    public User getUser() {
-        return user;
+    public boolean isRecurrent() {
+        return isRecurrent;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRecurrent(boolean isRecurrent) {
+        this.isRecurrent = isRecurrent;
+    }
+
+    public Credit getCredit() {
+        return credit;
+    }
+
+    public void setCredit(Credit credit) {
+        this.credit = credit;
     }
 
     public Instant getCreationTimestamp() {

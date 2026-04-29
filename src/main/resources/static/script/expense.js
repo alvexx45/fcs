@@ -20,7 +20,6 @@ async function loadExpenses() {
                 <tr>
                     <td>${expense.type}</td>
                     <td class="text-danger fw-bold">${formatCurrency(expense.value)}</td>
-                    <td>${expense.p_method || '-'}</td>
                     <td>${formatDate(expense.date)}</td>
                     <td class="text-end table-actions">
                         <button class="btn btn-sm btn-outline-primary" onclick="editExpense('${expense.expenseId}')">
@@ -45,20 +44,18 @@ document.getElementById('expenseForm').addEventListener('submit', async function
 
     try {
         const type = document.getElementById('expenseType').value;
-        const p_method = document.getElementById('expensePMethod').value;
         const value = document.getElementById('expenseValue').value;
         const date = document.getElementById('expenseDate').value;
         const expenseId = document.getElementById('expenseId').value; // Pega o ID (vazio se for criação)
 
         const expenseData = {
             type: type,
-            p_method: p_method,
             value: value,
             date: date
         }
 
         let response;
-        
+
         // Se tem ID, é edição (PUT), se não tem, é criação (POST)
         if (expenseId) {
             response = await fetch(`/users/${userId}/expense/${expenseId}`, {
@@ -109,7 +106,15 @@ document.getElementById('expenseForm').addEventListener('submit', async function
 });
 
 async function deleteExpense(expenseId) {
-    if (!confirm('Deseja realmente excluir esta despesa?')) return;
+    const confirmed = await showConfirm({
+        title: 'Excluir Despesa',
+        message: 'Deseja realmente excluir esta despesa? Esta ação não pode ser desfeita.',
+        icon: 'bi-trash',
+        color: 'danger',
+        buttonText: 'Excluir'
+    });
+
+    if (!confirmed) return;
 
     try {
         const response = await fetch(`/users/${userId}/expense/${expenseId}`, {
@@ -134,29 +139,28 @@ async function editExpense(expenseId) {
         // Busca os dados da despesa
         const response = await fetch(`/users/${userId}/expense`);
         const expenses = await response.json();
-        
+
         // Encontra a despesa específica
         const expense = expenses.find(e => e.expenseId === expenseId);
-        
+
         if (!expense) {
             showNotification('Despesa não encontrada!', 'error', 'danger');
             return;
         }
-        
+
         // Preenche o formulário com os dados
         document.getElementById('expenseId').value = expense.expenseId;
         document.getElementById('expenseType').value = expense.type;
-        document.getElementById('expensePMethod').value = expense.p_method || '';
         document.getElementById('expenseValue').value = expense.value;
         document.getElementById('expenseDate').value = formatDateForInput(expense.date);
-        
+
         // Muda o título do modal
         document.getElementById('expenseModalLabel').textContent = 'Editar Despesa';
-        
+
         // Abre o modal
         const modal = new bootstrap.Modal(document.getElementById('expenseModal'));
         modal.show();
-        
+
     } catch (error) {
         console.error('Erro ao carregar despesa:', error);
         showNotification('Erro ao carregar dados da despesa', 'error', 'danger');

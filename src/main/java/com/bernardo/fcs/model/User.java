@@ -48,6 +48,7 @@ public class User {
         this.expenses = expenses;
         this.incomes = incomes;
         this.investments = investments;
+        
     }
 
     public UUID getUserId() {

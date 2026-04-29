@@ -106,7 +106,15 @@ document.getElementById('investmentForm').addEventListener('submit', async funct
 });
 
 async function deleteInvestment(investmentId) {
-    if (!confirm('Deseja realmente excluir este investimento?')) return;
+    const confirmed = await showConfirm({
+        title: 'Excluir Investimento',
+        message: 'Deseja realmente excluir este investimento? Esta ação não pode ser desfeita.',
+        icon: 'bi-trash',
+        color: 'danger',
+        buttonText: 'Excluir'
+    });
+
+    if (!confirmed) return;
     
     try {
         const response = await fetch(`/users/${userId}/investment/${investmentId}`, {

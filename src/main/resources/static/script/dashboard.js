@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Fecha sidebar ao clicar em um link (mobile)
-        const navLinks = document.querySelectorAll('.sidebar .nav-link');
-        navLinks.forEach(link => {
+        const navLinksMobile = document.querySelectorAll('.sidebar .nav-link');
+        navLinksMobile.forEach(link => {
             link.addEventListener('click', function() {
                 if (window.innerWidth < 768) {
                     sidebar.classList.remove('show');
@@ -65,30 +65,92 @@ document.addEventListener('DOMContentLoaded', function() {
             const sectionId = this.dataset.section;
             document.getElementById(sectionId).classList.remove('d-none');
             
-            // Carrega dados da seção (você implementa)
+            // Fecha sidebar no mobile
+            if (window.innerWidth < 768 && sidebar) {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+            }
+            
+            // Carrega dados da seção
             loadSectionData(sectionId);
         });
     });
 
     // Logout
-    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+    document.getElementById('logoutBtn').addEventListener('click', async function(e) {
         e.preventDefault();
-        if (confirm('Deseja realmente sair?')) {
+        const confirmed = await showConfirm({
+            title: 'Sair da conta',
+            message: 'Deseja realmente encerrar sua sessão?',
+            icon: 'bi-box-arrow-right',
+            color: 'primary',
+            buttonText: 'Sair'
+        });
+        
+        if (confirmed) {
             window.location.href = '/';
         }
     });
 
     // Carrega dados iniciais
     loadOverviewData();
+
+    // Inicializa o Flatpickr para todos os campos de data
+    const flatpickrConfig = {
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "d/m/Y",
+        locale: "pt",
+        disableMobile: "true"
+    };
+
+    flatpickr('#expenseDate', flatpickrConfig);
+    flatpickr('#incomeDate', flatpickrConfig);
+    flatpickr('#investmentDate', flatpickrConfig);
+    flatpickr('#creditInstanceDate', flatpickrConfig);
 });
 
-
-// ========================================
-// FUNÇÕES PARA VOCÊ IMPLEMENTAR
-// ========================================
+// Função para mostrar modal de confirmação customizado
+function showConfirm({ title, message, icon, color, buttonText }) {
+    return new Promise((resolve) => {
+        const modalElement = document.getElementById('confirmModal');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const iconElement = document.getElementById('confirmIcon');
+        const titleElement = document.getElementById('confirmTitle');
+        const messageElement = document.getElementById('confirmMessage');
+        
+        // Configura conteúdo
+        titleElement.textContent = title || 'Tem certeza?';
+        messageElement.textContent = message || 'Esta ação não poderá ser desfeita.';
+        confirmBtn.textContent = buttonText || 'Confirmar';
+        
+        // Configura ícone e cor
+        iconElement.className = `bi ${icon || 'bi-exclamation-circle'} display-4 text-${color || 'warning'}`;
+        confirmBtn.className = `btn btn-${color === 'primary' ? 'primary' : 'danger'} px-4`;
+        
+        const modal = new bootstrap.Modal(modalElement);
+        
+        // Handler para o botão de confirmar
+        const handleConfirm = () => {
+            modal.hide();
+            resolve(true);
+            confirmBtn.removeEventListener('click', handleConfirm);
+        };
+        
+        confirmBtn.addEventListener('click', handleConfirm);
+        
+        // Handler para quando o modal fecha (seja por cancelar ou clicar fora)
+        modalElement.addEventListener('hidden.bs.modal', function onHidden() {
+            resolve(false);
+            confirmBtn.removeEventListener('click', handleConfirm);
+            modalElement.removeEventListener('hidden.bs.modal', onHidden);
+        }, { once: true });
+        
+        modal.show();
+    });
+}
 
 function loadSectionData(section) {
-    // TODO: Implementar carregamento de dados por seção
     switch(section) {
         case 'overview':
             loadOverviewData();
@@ -101,6 +163,9 @@ function loadSectionData(section) {
             break;
         case 'investments':
             loadInvestments();
+            break;
+        case 'credit':
+            loadCredits();
             break;
     }
 }
@@ -129,7 +194,8 @@ async function loadOverviewData() {
         const balance = totalIncome - totalExpenses - totalInvestments;
         const balanceElement = document.getElementById('totalBalance');
         balanceElement.textContent = formatCurrency(balance);
-        balanceElement.className = balance >= 0 ? 'mb-0 text-success' : 'mb-0 text-danger';
+        // Mantém a cor do texto igual ao rótulo (branco no card primário) para melhor harmonia
+        balanceElement.className = 'display-4 fw-bold mb-0 text-white';
     } catch (error) {
         console.error('Erro ao carregar dados gerais:', error);
     }
@@ -171,24 +237,29 @@ function showNotification(message, type = 'success', color = 'primary', containe
     
     // Cria o elemento de notificação
     const notification = document.createElement('div');
-    notification.className = `alert ${colorClass} text-white alert-dismissible fade show position-fixed`;
-    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; opacity: 0; transition: opacity 0.3s ease-in-out;';
+    notification.className = `alert ${colorClass} text-white shadow-lg border-0 fade show position-fixed`;
+    // Estilo para centralizar no topo
+    notification.style.cssText = 'top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; min-width: 320px; max-width: 90%; opacity: 0; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); padding: 1rem 1.5rem;';
     notification.innerHTML = `
-        <strong>${type === 'success' ? '✓' : '✗'}</strong> ${message}
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+        <div class="d-flex align-items-center justify-content-center gap-2">
+            <strong>${type === 'success' ? '✓' : '✗'}</strong> 
+            <span>${message}</span>
+        </div>
     `;
     
     // Adiciona ao body
     document.body.appendChild(notification);
     
-    // Fade in
+    // Fade in e leve movimento para baixo
     setTimeout(() => {
         notification.style.opacity = '1';
+        notification.style.top = '30px';
     }, 10);
     
     // Fade out e remove após 3 segundos
     setTimeout(() => {
         notification.style.opacity = '0';
+        notification.style.top = '20px';
         setTimeout(() => {
             notification.remove();
         }, 300);

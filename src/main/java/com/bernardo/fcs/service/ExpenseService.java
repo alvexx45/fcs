@@ -32,7 +32,6 @@ public class ExpenseService {
         var entity = new Expense();
         entity.setType(createExpenseDTO.type());
         entity.setValue(createExpenseDTO.value());
-        entity.setP_method(createExpenseDTO.p_method());
         entity.setDate(createExpenseDTO.date());
         entity.setUser(user);
 
@@ -41,29 +40,27 @@ public class ExpenseService {
 
     public List<ExpenseResponseDTO> listExpenses(String userId) {
         var userId_uuid = UUID.fromString(userId);
-        
+
         // Verifica se usuário existe
         if (!userRepository.existsById(userId_uuid)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        
-        // Busca despesas já ordenadas por data (mais recente primeiro)
-        return expenseRepository.findByUser_UserIdOrderByDateDesc(userId_uuid)
-            .stream()
-            .map(exp -> new ExpenseResponseDTO(
-                exp.getExpenseId().toString(), 
-                exp.getType(),
-                exp.getValue(), 
-                exp.getP_method(), 
-                exp.getDate()
-            ))
-            .toList();   
+
+        // Busca despesas já ordenadas por data e criação (mais recente primeiro)
+        return expenseRepository.findByUser_UserIdOrderByDateDescCreationTimestampDesc(userId_uuid)
+                .stream()
+                .map(exp -> new ExpenseResponseDTO(
+                        exp.getExpenseId().toString(),
+                        exp.getType(),
+                        exp.getValue(),
+                        exp.getDate()))
+                .toList();
     }
 
     public void updateExpenseById(String userId, String expenseId, UpdateExpenseDTO updateExpenseDTO) {
         var expense = expenseRepository.findById(UUID.fromString(expenseId))
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         if (!expense.getUser().getUserId().equals(UUID.fromString(userId))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
@@ -83,12 +80,12 @@ public class ExpenseService {
 
     public void deleteExpenseById(String userId, String expenseId) {
         var expense = expenseRepository.findById(UUID.fromString(expenseId))
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         if (!expense.getUser().getUserId().equals(UUID.fromString(userId))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
-        
+
         expenseRepository.delete(expense);
     }
 

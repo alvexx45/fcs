@@ -1,34 +1,12 @@
 services:
-  postgres:
-    image: postgres:16-alpine
+  mariadb:
+    image: mariadb
     ports:
-      - "5432:5432"
-    expose:
-      - "5432"
+      - "3307:3306"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=fcs_db
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db_example
+      - MYSQL_USER=springuser
+      - MYSQL_PASSWORD=ThePassword
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  app:
-    build: .
-    ports:
-      - "8080:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      - DATABASE_URL=jdbc:postgresql://postgres:5432/fcs_db
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - PORT=8080
-
-volumes:
-  postgres_data:
+      - "./conf.d:/etc/mysql/conf.d:ro"

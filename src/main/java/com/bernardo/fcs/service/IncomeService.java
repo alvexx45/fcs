@@ -48,8 +48,8 @@ public class IncomeService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         
-        // Busca receitas já ordenadas por data (mais recente primeiro)
-        return incomeRepository.findByUser_UserIdOrderByDateDesc(userId_uuid)
+        // Busca receitas já ordenadas por data e criação (mais recente primeiro)
+        return incomeRepository.findByUser_UserIdOrderByDateDescCreationTimestampDesc(userId_uuid)
             .stream()
             .map(inc -> new IncomeResponseDTO(
                 inc.getIncomeId().toString(), 

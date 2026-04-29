@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.bernardo.fcs.model.Investment;
+import com.bernardo.fcs.model.Credit;
 
 @Repository
-public interface InvestmentRepository extends JpaRepository<Investment, UUID> {
-    List<Investment> findByUser_UserIdOrderByDateDescCreationTimestampDesc(UUID userId);
+public interface CreditRepository extends JpaRepository<Credit, UUID> {
+    List<Credit> findByUser_UserIdOrderByCreationTimestampDesc(UUID userId);
 }
