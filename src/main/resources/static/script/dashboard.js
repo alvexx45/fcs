@@ -83,6 +83,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Carrega dados iniciais
     loadOverviewData();
+
+    // Inicializa o Flatpickr para todos os campos de data
+    const flatpickrConfig = {
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "d/m/Y",
+        locale: "pt",
+        disableMobile: "true"
+    };
+
+    flatpickr('#expenseDate', flatpickrConfig);
+    flatpickr('#incomeDate', flatpickrConfig);
+    flatpickr('#investmentDate', flatpickrConfig);
 });
 
 // Função para mostrar modal de confirmação customizado
@@ -166,7 +179,8 @@ async function loadOverviewData() {
         const balance = totalIncome - totalExpenses - totalInvestments;
         const balanceElement = document.getElementById('totalBalance');
         balanceElement.textContent = formatCurrency(balance);
-        balanceElement.className = balance >= 0 ? 'mb-0 text-success' : 'mb-0 text-danger';
+        // Mantém a cor do texto igual ao rótulo (branco no card primário) para melhor harmonia
+        balanceElement.className = 'display-4 fw-bold mb-0 text-white';
     } catch (error) {
         console.error('Erro ao carregar dados gerais:', error);
     }
@@ -208,24 +222,29 @@ function showNotification(message, type = 'success', color = 'primary', containe
     
     // Cria o elemento de notificação
     const notification = document.createElement('div');
-    notification.className = `alert ${colorClass} text-white alert-dismissible fade show position-fixed`;
-    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; opacity: 0; transition: opacity 0.3s ease-in-out;';
+    notification.className = `alert ${colorClass} text-white shadow-lg border-0 fade show position-fixed`;
+    // Estilo para centralizar no topo
+    notification.style.cssText = 'top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; min-width: 320px; max-width: 90%; opacity: 0; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); padding: 1rem 1.5rem;';
     notification.innerHTML = `
-        <strong>${type === 'success' ? '✓' : '✗'}</strong> ${message}
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+        <div class="d-flex align-items-center justify-content-center gap-2">
+            <strong>${type === 'success' ? '✓' : '✗'}</strong> 
+            <span>${message}</span>
+        </div>
     `;
     
     // Adiciona ao body
     document.body.appendChild(notification);
     
-    // Fade in
+    // Fade in e leve movimento para baixo
     setTimeout(() => {
         notification.style.opacity = '1';
+        notification.style.top = '30px';
     }, 10);
     
     // Fade out e remove após 3 segundos
     setTimeout(() => {
         notification.style.opacity = '0';
+        notification.style.top = '20px';
         setTimeout(() => {
             notification.remove();
         }, 300);
