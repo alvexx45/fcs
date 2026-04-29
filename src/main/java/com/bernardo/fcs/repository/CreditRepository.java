@@ -10,5 +10,5 @@ import com.bernardo.fcs.model.Credit;
 
 @Repository
 public interface CreditRepository extends JpaRepository<Credit, UUID> {
-    
+    List<Credit> findByUser_UserIdOrderByCreationTimestampDesc(UUID userId);
 }
