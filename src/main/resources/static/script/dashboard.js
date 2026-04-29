@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
     flatpickr('#expenseDate', flatpickrConfig);
     flatpickr('#incomeDate', flatpickrConfig);
     flatpickr('#investmentDate', flatpickrConfig);
+    flatpickr('#creditInstanceDate', flatpickrConfig);
 });
 
 // Função para mostrar modal de confirmação customizado
@@ -151,6 +152,9 @@ function loadSectionData(section) {
             break;
         case 'investments':
             loadInvestments();
+            break;
+        case 'credit':
+            loadCredits();
             break;
     }
 }
