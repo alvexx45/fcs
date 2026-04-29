@@ -1,7 +1,6 @@
 package com.bernardo.fcs.model;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
